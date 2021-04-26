@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://cloudintheking.github.io/paint/index.html</loc>
+    
+    <lastmod>2021-04-26T14:32:52.282Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://cloudintheking.github.io/works/index.html</loc>
     
-    <lastmod>2021-04-26T14:30:21.259Z</lastmod>
+    <lastmod>2021-04-26T14:32:43.731Z</lastmod>
     
   </url>
   
@@ -37,13 +44,6 @@
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/posts/f1b4514.html</loc>
-    
-    <lastmod>2021-04-26T13:07:09.988Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://cloudintheking.github.io/posts/84d9992c.html</loc>
     
     <lastmod>2021-04-26T13:07:09.988Z</lastmod>
@@ -58,14 +58,21 @@
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/posts/9885f22a.html</loc>
+    <loc>https://cloudintheking.github.io/posts/f1b4514.html</loc>
+    
+    <lastmod>2021-04-26T13:07:09.988Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://cloudintheking.github.io/posts/cb85a86.html</loc>
     
     <lastmod>2021-04-26T13:07:09.982Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/posts/cb85a86.html</loc>
+    <loc>https://cloudintheking.github.io/posts/9885f22a.html</loc>
     
     <lastmod>2021-04-26T13:07:09.982Z</lastmod>
     
@@ -86,13 +93,6 @@
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/posts/d482e59b.html</loc>
-    
-    <lastmod>2021-04-26T13:07:09.970Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://cloudintheking.github.io/posts/14f7ff4b.html</loc>
     
     <lastmod>2021-04-26T13:07:09.970Z</lastmod>
@@ -101,6 +101,13 @@
   
   <url>
     <loc>https://cloudintheking.github.io/posts/6059b33.html</loc>
+    
+    <lastmod>2021-04-26T13:07:09.970Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://cloudintheking.github.io/posts/d482e59b.html</loc>
     
     <lastmod>2021-04-26T13:07:09.970Z</lastmod>
     
@@ -121,13 +128,6 @@
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/posts/ada9fa1e.html</loc>
-    
-    <lastmod>2021-04-26T13:07:09.956Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://cloudintheking.github.io/posts/a174bf32.html</loc>
     
     <lastmod>2021-04-26T13:07:09.956Z</lastmod>
@@ -142,6 +142,13 @@
   </url>
   
   <url>
+    <loc>https://cloudintheking.github.io/posts/ada9fa1e.html</loc>
+    
+    <lastmod>2021-04-26T13:07:09.956Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://cloudintheking.github.io/posts/c4e70f88.html</loc>
     
     <lastmod>2021-04-26T13:07:09.948Z</lastmod>
@@ -150,13 +157,6 @@
   
   <url>
     <loc>https://cloudintheking.github.io/categories/index.html</loc>
-    
-    <lastmod>2021-04-25T15:44:16.049Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://cloudintheking.github.io/paint/index.html</loc>
     
     <lastmod>2021-04-25T15:44:16.049Z</lastmod>
     
