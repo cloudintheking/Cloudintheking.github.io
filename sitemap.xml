@@ -2,14 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://cloudintheking.github.io/posts/1e602a25.html</loc>
+    <loc>https://cloudintheking.github.io/works/index.html</loc>
+    
+    <lastmod>2021-04-26T14:30:21.259Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://cloudintheking.github.io/posts/f445f2a6.html</loc>
     
     <lastmod>2021-04-26T13:07:10.006Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/posts/f445f2a6.html</loc>
+    <loc>https://cloudintheking.github.io/posts/1e602a25.html</loc>
     
     <lastmod>2021-04-26T13:07:10.006Z</lastmod>
     
@@ -30,6 +37,13 @@
   </url>
   
   <url>
+    <loc>https://cloudintheking.github.io/posts/f1b4514.html</loc>
+    
+    <lastmod>2021-04-26T13:07:09.988Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://cloudintheking.github.io/posts/84d9992c.html</loc>
     
     <lastmod>2021-04-26T13:07:09.988Z</lastmod>
@@ -44,9 +58,9 @@
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/posts/f1b4514.html</loc>
+    <loc>https://cloudintheking.github.io/posts/9885f22a.html</loc>
     
-    <lastmod>2021-04-26T13:07:09.988Z</lastmod>
+    <lastmod>2021-04-26T13:07:09.982Z</lastmod>
     
   </url>
   
@@ -58,21 +72,14 @@
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/posts/9885f22a.html</loc>
-    
-    <lastmod>2021-04-26T13:07:09.982Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://cloudintheking.github.io/posts/771d835a.html</loc>
+    <loc>https://cloudintheking.github.io/posts/915a4669.html</loc>
     
     <lastmod>2021-04-26T13:07:09.977Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/posts/915a4669.html</loc>
+    <loc>https://cloudintheking.github.io/posts/771d835a.html</loc>
     
     <lastmod>2021-04-26T13:07:09.977Z</lastmod>
     
@@ -142,13 +149,6 @@
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/paint/index.html</loc>
-    
-    <lastmod>2021-04-25T15:44:16.049Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://cloudintheking.github.io/categories/index.html</loc>
     
     <lastmod>2021-04-25T15:44:16.049Z</lastmod>
@@ -156,14 +156,14 @@
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/tags/index.html</loc>
+    <loc>https://cloudintheking.github.io/paint/index.html</loc>
     
     <lastmod>2021-04-25T15:44:16.049Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://cloudintheking.github.io/works/index.html</loc>
+    <loc>https://cloudintheking.github.io/tags/index.html</loc>
     
     <lastmod>2021-04-25T15:44:16.049Z</lastmod>
     
