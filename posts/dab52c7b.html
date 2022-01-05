@@ -159,14 +159,14 @@
 <meta property="og:site_name" content="cloudintheking">
 <meta property="og:description" content="-     -  个人笔记，如有描述不当，欢迎留言指出~  spring 日记Bean@Scope(作用域注解)关键属性：  scopeName：作用域名，”prototype”、”singleton”、”request”、”session” proxyMode：代理模式，ScopedProxyMode. DEFAULT（默认为NO）、ScopedProxyMode.NO（不代理）、ScopedP">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://cloudintheking.github.io/posts/653056-20160302182245205-1224347634.png">
-<meta property="og:image" content="https://cloudintheking.github.io/posts/1575809748903.png">
-<meta property="og:image" content="https://cloudintheking.github.io/posts/1575812358419.png">
+<meta property="og:image" content="https://cloudintheking.github.io/posts/dab52c7b/653056-20160302182245205-1224347634.png">
+<meta property="og:image" content="https://cloudintheking.github.io/posts/dab52c7b/1575809748903.png">
+<meta property="og:image" content="https://cloudintheking.github.io/posts/dab52c7b/1575812358419.png">
 <meta property="og:updated_time" content="2021-04-26T13:07:09.998Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spring日记">
 <meta name="twitter:description" content="-     -  个人笔记，如有描述不当，欢迎留言指出~  spring 日记Bean@Scope(作用域注解)关键属性：  scopeName：作用域名，”prototype”、”singleton”、”request”、”session” proxyMode：代理模式，ScopedProxyMode. DEFAULT（默认为NO）、ScopedProxyMode.NO（不代理）、ScopedP">
-<meta name="twitter:image" content="https://cloudintheking.github.io/posts/653056-20160302182245205-1224347634.png">
+<meta name="twitter:image" content="https://cloudintheking.github.io/posts/dab52c7b/653056-20160302182245205-1224347634.png">
 
 
 
@@ -318,7 +318,7 @@
           
           <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档<span class="badge">20</span></a>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档<span class="badge">24</span></a>
   </li>
 
       
@@ -537,7 +537,7 @@
 
       
         <p>-<br>
-    <div id="aplayer-gnNzZWYq" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
+    <div id="aplayer-cGIgrqCp" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~</p>
 </blockquote>
@@ -548,10 +548,10 @@
 </ul>
 <p>用法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Scope</span>(scopeName=<span class="string">"xx"</span>,proxyMode=xxx)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XXX</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure></p>
 <p>或者<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XXXConfig</span></span>&#123;</span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@Scope</span>(scopeName=<span class="string">"xx"</span>,proxyMode=xxx)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Xxx <span class="title">getXxx</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> Xxx();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong><em>NOTE</em></strong>:<br>若scopeName=”prototype”,proxyMode=ScopedProxyMode.NO,那每次都会得到一个新的bean;<br>若scopeName=”prototype”,proxyMode=ScopedProxyMode.INTERFACES或TARGET_CLASS, 那么会被注入一个代理类（它是单例并非原型），代理类里根据scopeName来返回具体的bean。<br><img src="./653056-20160302182245205-1224347634.png" alt="Alt text"></p>
+<p><strong><em>NOTE</em></strong>:<br>若scopeName=”prototype”,proxyMode=ScopedProxyMode.NO,那每次都会得到一个新的bean;<br>若scopeName=”prototype”,proxyMode=ScopedProxyMode.INTERFACES或TARGET_CLASS, 那么会被注入一个代理类（它是单例并非原型），代理类里根据scopeName来返回具体的bean。<br><img src="/posts/dab52c7b/653056-20160302182245205-1224347634.png" alt="Alt text"></p>
 <h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><h3 id="cacheManager"><a href="#cacheManager" class="headerlink" title="cacheManager"></a>cacheManager</h3><p>cacheManager(缓存管理器)可以注册多个，但是id必须不同，另外必须指定其中一个cacheManager上加上<code>@Primary</code>，否则<code>CacheAspectSupport</code>(cache切面类)中获取cacheManager bean时返回多个会报错。</p>
-<p><img src="./1575809748903.png" alt="Alt text"></p>
-<p>也可以不指定<code>@Primary</code>，但要注册一个cache配置类继承<code>CachingConfigurerSupport</code>,并覆盖其中<strong>cacheManager()</strong>方法，返回一个已注册的cacheManager<br><img src="./1575812358419.png" alt="Alt text"></p>
+<p><img src="/posts/dab52c7b/1575809748903.png" alt="Alt text"></p>
+<p>也可以不指定<code>@Primary</code>，但要注册一个cache配置类继承<code>CachingConfigurerSupport</code>,并覆盖其中<strong>cacheManager()</strong>方法，返回一个已注册的cacheManager<br><img src="/posts/dab52c7b/1575812358419.png" alt="Alt text"></p>
 <p><code>@Cacheable</code>中可以指定cacheManager, 故可以实现不同的缓存方式</p>
 <p><code>EhcacheCacheManage</code>、<code>JcacheCacheManager</code>、<code>RedisCacheManager</code>三者都继承了 <strong><em><code>AbstractTransactionSupportingCacheManager</code></em></strong>， 通过设置<strong><em>setTransactionAware(boolean transactionAware)</em></strong>方法，可以实现事务提交后再进行缓存操作（注意，不管事务最后成功与否，缓存都会执行，慎用！！）</p>
 <h3 id="redisTemplate"><a href="#redisTemplate" class="headerlink" title="redisTemplate"></a>redisTemplate</h3><p><code>redisTemplate</code>（redis缓存模板）中 <strong><em>setEnableTransactionSupport(boolean enableTransactionSupport)</em></strong>设置开启事务支持，结合<code>@Transactional</code>可以实现缓存回滚</p>
@@ -670,6 +670,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/posts/511a3199.html" rel="prev" title="windows下编译mysql5.7.25">
+                windows下编译mysql5.7.25 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -749,7 +753,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -922,7 +926,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
@@ -936,7 +940,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">93k</span>
+    <span title="站点总字数">102k</span>
   
 
   
@@ -947,7 +951,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">1:25</span>
+    <span title="站点阅读时长">1:32</span>
   
 </div>
 

@@ -313,7 +313,7 @@
           
           <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档<span class="badge">20</span></a>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档<span class="badge">24</span></a>
   </li>
 
       
@@ -359,6 +359,926 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/9885f22a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloudintheking">
+      <meta itemprop="description" content="北落师门">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloudintheking">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/9885f22a.html" itemprop="url">
+                  mongodb操作之$slice
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-15 21:50:29" itemprop="dateCreated datePublished" datetime="2018-08-15T21:50:29+08:00">2018-08-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/翻译篇/" itemprop="url" rel="index"><span itemprop="name">翻译篇</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/9885f22a.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/9885f22a.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">2.8k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">3 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+
+    <div id="aplayer-YnCZdNwG" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+<hr>
+<blockquote>
+<p>翻译原文：<a href="https://docs.mongodb.com/manual/reference/operator/update/slice/#examples" target="_blank" rel="noopener">https://docs.mongodb.com/manual/reference/operator/update/slice/#examples</a></p>
+</blockquote>
+<h2 id="slice（切分）"><a href="#slice（切分）" class="headerlink" title="$slice（切分）"></a>$slice（切分）</h2><p>当进行<code>$push</code>(插入)操作时，可以通过 <code>$slice</code>修饰词来限制插入的数组元素个数。如果想从一个只读操作中映射或是返回数组元素中特定的值，详见<a href="https://docs.mongodb.com/manual/reference/operator/projection/slice/#proj._S_slice" target="_blank" rel="noopener"><code>$slice</code></a>映射操作。<br><code>$slice</code>修饰词必须搭配<code>$each</code>修饰词才能使用。不过，你也可以传递一个空数组给<code>$each</code>修饰词，从而只让<code>$slice</code>修饰词起作用。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  $push: &#123;</span><br><span class="line">     &lt;field&gt;: &#123;</span><br><span class="line">       $each: [ &lt;value1&gt;, &lt;value2&gt;, ... ],</span><br><span class="line">       $slice: &lt;num&gt;</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&lt; <strong>num</strong> &gt; 的值可以是：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Value</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left">更新数组&lt;<strong>field</strong>&gt;为空数组</td>
+</tr>
+<tr>
+<td style="text-align:left">负数</td>
+<td style="text-align:left">更新数组&lt;<strong>field</strong>&gt;只包含最后&lt;<strong>num</strong>&gt;个元素</td>
+</tr>
+<tr>
+<td style="text-align:left">正数</td>
+<td style="text-align:left">更新数组&lt;<strong>field</strong>&gt;只包含开头&lt;<strong>num</strong>&gt;个元素，适用于2.6以上版本</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Behavior-行为"><a href="#Behavior-行为" class="headerlink" title="Behavior(行为)"></a>Behavior(行为)</h2><p>这些修饰词出现的顺序是无关紧要的。不过在上一个版本中，要求<code>$each</code>修饰词得作为第一个修饰词出现，如果要和<code>$slice</code>修饰词连用的话。这里有一份关于和<code>$push</code>搭配使用的修饰词列表，详见<a href="https://docs.mongodb.com/manual/reference/operator/update/push/#push-modifiers" target="_blank" rel="noopener">Modifiers</a>。<br>不结合<code>$each</code>修饰词而只使用<code>$slice</code>修饰词将会导致出错，不信可以试试。</p>
+<h2 id="栗子"><a href="#栗子" class="headerlink" title="栗子"></a>栗子</h2><h3 id="从数组末尾切片"><a href="#从数组末尾切片" class="headerlink" title="从数组末尾切片"></a>从数组末尾切片</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">1</span>, <span class="attr">"scores"</span> : [ <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面的操作增加一个新元素到<strong>scores</strong>数组中，然后使用<code>$slice</code>将数组修剪为最后五个元素。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">   &#123; _id: 1 &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     $push: &#123;</span><br><span class="line">       scores: &#123;</span><br><span class="line">         $each: [ 80, 78, 86 ],</span><br><span class="line">         $slice: -5</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>操作的结果就是将更新后的<strong>scores</strong>数组切分为最后5个元素<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">1</span>, <span class="attr">"scores"</span> : [  <span class="number">50</span>,  <span class="number">60</span>,  <span class="number">80</span>,  <span class="number">78</span>,  <span class="number">86</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="从数组头部切片"><a href="#从数组头部切片" class="headerlink" title="从数组头部切片"></a>从数组头部切片</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">2</span>, <span class="attr">"scores"</span> : [ <span class="number">89</span>, <span class="number">90</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面的操作增加一个新元素到<strong>scores</strong>数组中，然后使用<code>$slice</code>修饰词修剪为前三个元素。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">   &#123; _id: 2 &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     $push: &#123;</span><br><span class="line">       scores: &#123;</span><br><span class="line">         $each: [ 100, 20 ],</span><br><span class="line">         $slice: 3</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>操作的结果就是将更新后的<strong>scores</strong>数组切分为前三个元素中。</p>
+<h3 id="只用slice来更新数组"><a href="#只用slice来更新数组" class="headerlink" title="只用slice来更新数组"></a>只用slice来更新数组</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">3</span>, <span class="attr">"scores"</span> : [  <span class="number">89</span>,  <span class="number">70</span>,  <span class="number">100</span>,  <span class="number">20</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
+<p>为了只用<code>$slice</code>修饰词来更新<strong>scores</strong>字段，我们得给出要切分的元素数量（比如 -3）赋给<code>slice</code>修饰词,而且赋一个空数组给<code>$each</code>修饰词，就像下面的代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">  &#123; _id: 3 &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    $push: &#123;</span><br><span class="line">      scores: &#123;</span><br><span class="line">         $each: [ ],</span><br><span class="line">         $slice: -3</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>操作的结果就是将scores数组切分为最后三个元素。</p>
+<h3 id="slice-和push搭配使用"><a href="#slice-和push搭配使用" class="headerlink" title="slice 和push搭配使用"></a><code>slice</code> 和<code>push</code>搭配使用</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="attr">"_id"</span> : <span class="number">5</span>,</span><br><span class="line">   <span class="attr">"quizzes"</span> : [</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">1</span>, <span class="attr">"score"</span> : <span class="number">10</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">2</span>, <span class="attr">"score"</span> : <span class="number">8</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">3</span>, <span class="attr">"score"</span> : <span class="number">5</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">4</span>, <span class="attr">"score"</span> : <span class="number">6</span> &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面的<code>$push</code>操作将会：</p>
+<ul>
+<li>使用<code>$each</code>修饰词来增加多个文档到<strong>quizzes</strong>数组中，</li>
+<li>使用<code>$sort</code>修饰词，按照<strong>score</strong>字段来降序排序修改过的<strong>quizzies</strong>数组中的全部元素，</li>
+<li>使用<code>$slice</code>修饰词，只保留<strong>quizzes</strong>数排中前三个排序过的元素。</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">   &#123; _id: 5 &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     $push: &#123;</span><br><span class="line">       quizzes: &#123;</span><br><span class="line">          $each: [ &#123; wk: 5, score: 8 &#125;, &#123; wk: 6, score: 7 &#125;, &#123; wk: 7, score: 6 &#125; ],</span><br><span class="line">          $sort: &#123; score: -1 &#125;,</span><br><span class="line">          $slice: 3</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>操作结果就是只保留了quizzes数组中分数最高的三个元素。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"_id"</span> : <span class="number">5</span>,</span><br><span class="line">  <span class="attr">"quizzes"</span> : [</span><br><span class="line">     &#123; <span class="attr">"wk"</span> : <span class="number">1</span>, <span class="attr">"score"</span> : <span class="number">10</span> &#125;,</span><br><span class="line">     &#123; <span class="attr">"wk"</span> : <span class="number">2</span>, <span class="attr">"score"</span> : <span class="number">8</span> &#125;,</span><br><span class="line">     &#123; <span class="attr">"wk"</span> : <span class="number">5</span>, <span class="attr">"score"</span> : <span class="number">8</span> &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面操作中的修饰词都会被Mongodb自行处理，所有它们之间的书写顺序无关紧要。更多详情请见<a href="https://docs.mongodb.com/manual/reference/operator/update/push/#push-modifiers" target="_blank" rel="noopener">Modifiers</a>。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/915a4669.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloudintheking">
+      <meta itemprop="description" content="北落师门">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloudintheking">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/915a4669.html" itemprop="url">
+                  oracle之表信息查询
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-10 21:41:43" itemprop="dateCreated datePublished" datetime="2018-08-10T21:41:43+08:00">2018-08-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/915a4669.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/915a4669.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">1.2k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">1 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+
+    <div id="aplayer-iPqRlkxv" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+<hr>
+<blockquote>
+<p>个人笔记，如有描述不当，欢迎留言指出~</p>
+</blockquote>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>主管抽风，想查询数据库’dbo‘中各表字段结构、外键信息、索引信息。于是任务交给了我…</p>
+<h2 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 各表字段结构</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  TABLE_SCHEMA   数据库,</span><br><span class="line">  table_name     表名,</span><br><span class="line">  column_name    字段名,</span><br><span class="line">  data_type      类型,</span><br><span class="line">  is_nullable    是否为空,</span><br><span class="line">  column_default 默认值</span><br><span class="line"><span class="keyword">FROM</span> information_schema.columns</span><br><span class="line"><span class="keyword">WHERE</span> TABLE_SCHEMA = <span class="string">'dbo'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 各表外键信息</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  object_name(parent_object_id)                        表名,</span><br><span class="line">  object_name(constraint_object_id)                    约束名称,</span><br><span class="line">  col_name(parent_object_id, parent_column_id)         外键字段,</span><br><span class="line">  object_name(referenced_object_id)                    关联表名,</span><br><span class="line">  col_name(referenced_object_id, referenced_column_id) 关联表字段</span><br><span class="line"><span class="keyword">FROM</span> sys.foreign_key_columns</span><br><span class="line"><span class="keyword">WHERE</span> referenced_object_id <span class="keyword">IN</span> (</span><br><span class="line">  <span class="keyword">SELECT</span> object_id(T.table_name)</span><br><span class="line">  <span class="keyword">FROM</span> (</span><br><span class="line">         <span class="keyword">SELECT</span> table_name</span><br><span class="line">         <span class="keyword">FROM</span> information_schema.columns</span><br><span class="line">         <span class="keyword">WHERE</span> TABLE_SCHEMA = <span class="string">'dbo'</span></span><br><span class="line">       ) T</span><br><span class="line">)</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> object_name(parent_object_id)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 各表索引信息</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  object_name(object_id) 表名,</span><br><span class="line">  <span class="keyword">name</span>                   索引名,</span><br><span class="line">  is_unique              是否唯一</span><br><span class="line"><span class="keyword">FROM</span> sys.indexes</span><br><span class="line"><span class="keyword">WHERE</span> Object_id <span class="keyword">IN</span> (</span><br><span class="line">  <span class="keyword">SELECT</span> object_id(T.table_name)</span><br><span class="line">  <span class="keyword">FROM</span> (</span><br><span class="line">         <span class="keyword">SELECT</span> table_name</span><br><span class="line">         <span class="keyword">FROM</span> information_schema.columns</span><br><span class="line">         <span class="keyword">WHERE</span> TABLE_SCHEMA = <span class="string">'dbo'</span></span><br><span class="line">       ) T</span><br><span class="line">)</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> 表名</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/771d835a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloudintheking">
+      <meta itemprop="description" content="北落师门">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloudintheking">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/771d835a.html" itemprop="url">
+                  oracle之多表统计查询
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-09 21:58:40" itemprop="dateCreated datePublished" datetime="2018-08-09T21:58:40+08:00">2018-08-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/771d835a.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/771d835a.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">1.1k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">1 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+
+    <div id="aplayer-zJTVPJNF" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+<hr>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>主管想根据时间范围统计下各标段各桥梁部件的录入数量，这个任务就交给我吧…</p>
+<h2 id="表介绍"><a href="#表介绍" class="headerlink" title="表介绍"></a>表介绍</h2><ul>
+<li><strong>qr_code_item_type</strong>：桥梁部件类型表，类型有桩基、承台、墩柱等</li>
+<li><strong>qr_code_item1</strong> ：桥梁墩柱类部件信息表，关联表<em>qr_code_item_type</em>、<em>qr_code_main</em></li>
+<li><strong>qr_code_item2</strong> ：桥梁梁类部件信息表，关联表<em>qr_code_item_type</em>、<em>qr_code_main</em></li>
+<li><strong>qr_code_main</strong>：桥梁标段表<h2 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> itype.id,<span class="keyword">isnull</span>(total, <span class="number">0</span>) total</span><br><span class="line"><span class="keyword">FROM</span> qr_code_item_type itype</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> (</span><br><span class="line">              <span class="keyword">SELECT</span> item.item_type_id <span class="keyword">type</span>,<span class="keyword">COUNT</span>(*) total</span><br><span class="line">              <span class="keyword">FROM</span> qr_code_item item</span><br><span class="line">              <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> qr_code_main <span class="keyword">main</span> <span class="keyword">ON</span> item.qr_code_main_id = main.id</span><br><span class="line">              <span class="keyword">WHERE</span> main.section = <span class="number">2</span> <span class="keyword">AND</span> <span class="keyword">isnull</span>(item.update_time, item.create_time) <span class="keyword">BETWEEN</span> <span class="string">'20180301'</span> <span class="keyword">AND</span> <span class="string">'20180801'</span></span><br><span class="line">              <span class="keyword">GROUP</span> <span class="keyword">BY</span> item.item_type_id</span><br><span class="line">              <span class="keyword">UNION</span> ALL</span><br><span class="line">              <span class="keyword">SELECT</span> item.item_type_id <span class="keyword">type</span>, <span class="keyword">COUNT</span>(*) total</span><br><span class="line">              <span class="keyword">FROM</span> qr_code_item2 item</span><br><span class="line">              <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> qr_code_main <span class="keyword">main</span> <span class="keyword">ON</span> item.qr_code_main_id = main.id</span><br><span class="line">              <span class="keyword">WHERE</span> main.section = <span class="number">2</span> <span class="keyword">AND</span> <span class="keyword">isnull</span>(item.update_time, item.create_time) <span class="keyword">BETWEEN</span> <span class="string">'20180301'</span> <span class="keyword">AND</span> <span class="string">'20180801'</span></span><br><span class="line">              <span class="keyword">GROUP</span> <span class="keyword">BY</span> item.item_type_id</span><br><span class="line">            )</span><br><span class="line">            aa <span class="keyword">ON</span> itype.id = aa.type</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> itype.id</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>ps:墩柱类、梁类虽都属于部件类，但具体信息差别较大，故分成两个表，所以统计的时候使用了联合查询</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/14f7ff4b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloudintheking">
+      <meta itemprop="description" content="北落师门">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloudintheking">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/14f7ff4b.html" itemprop="url">
+                  mongodb之主从、集群、分片
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-07 22:04:05" itemprop="dateCreated datePublished" datetime="2018-08-07T22:04:05+08:00">2018-08-07</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/14f7ff4b.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/14f7ff4b.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">2.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">2 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+
+    <div id="aplayer-zsWvIdVn" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+<hr>
+<blockquote>
+<p>个人笔记，如有描述不当，欢迎留言指出~</p>
+</blockquote>
+<h2 id="核心语句"><a href="#核心语句" class="headerlink" title="核心语句"></a>核心语句</h2><p>博客也好，官网也罢，密密麻麻一堆话，提炼浓缩就下面这几行命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#主从复制</span></span><br><span class="line">mongod --port 27018 --dbpath <span class="string">"F:\mongodbSet\mongodb1\data"</span> --logpath <span class="string">"F:\mongodbSet\mongodb1\log\mongodb.log"</span> --logappend --master</span><br><span class="line">mongod --port 27019 --dbpath <span class="string">"F:\mongodbSet\mongodb2\data"</span> --logpath <span class="string">"F:\mongodbSet\mongodb2\log\mongodb.log"</span> --logappend --slave --<span class="built_in">source</span>=127.0.0.1:27018</span><br><span class="line"></span><br><span class="line"><span class="comment">#副本集</span></span><br><span class="line">mongod --port 27018 --dbpath <span class="string">"F:\mongodbSet\mongodb1\data"</span> --logpath <span class="string">"F:\mongodbSet\mongodb1\log\mongodb.log"</span> --logappend --replSet myrs</span><br><span class="line">mongod --port 27019 --dbpath <span class="string">"F:\mongodbSet\mongodb2\data"</span> --logpath <span class="string">"F:\mongodbSet\mongodb2\log\mongodb.log"</span> --logappend --replSet myrs</span><br><span class="line">mongod --port 27020 --dbpath <span class="string">"F:\mongodbSet\mongodb3\data"</span> --logpath <span class="string">"F:\mongodbSet\mongodb3\log\mongodb.log"</span> --logappend --replSet myrs</span><br><span class="line"></span><br><span class="line"><span class="comment">#分片+副本集</span></span><br><span class="line"><span class="comment">#config</span></span><br><span class="line">mongod --port 27018 --bind_ip 127.0.0.1 --configsvr --dbpath <span class="string">"F:\mongodbSet\config\mongodb1\data"</span> --logpath <span class="string">"F:\mongodbSet\config\mongodb1\log\mongodb.log"</span> --logappend --replSet configs</span><br><span class="line">mongod --port 27019 --bind_ip 127.0.0.1 --configsvr --dbpath <span class="string">"F:\mongodbSet\config\mongodb2\data"</span> --logpath <span class="string">"F:\mongodbSet\config\mongodb2\log\mongodb.log"</span> --logappend --replSet configs</span><br><span class="line">mongod --port 27020 --bind_ip 127.0.0.1 --configsvr --dbpath <span class="string">"F:\mongodbSet\config\mongodb3\data"</span> --logpath <span class="string">"F:\mongodbSet\config\mongodb3\log\mongodb.log"</span> --logappend --replSet configs</span><br><span class="line"></span><br><span class="line"><span class="comment">#shard</span></span><br><span class="line">mongod --port 27024 --bind_ip 127.0.0.1 --shardsvr --dbpath <span class="string">"F:\mongodbSet\shared\mongodb1\data"</span> --logpath <span class="string">"F:\mongodbSet\shared\mongodb1\log\mongodb.log"</span> --logappend --replSet shard</span><br><span class="line">mongod --port 27025 --bind_ip 127.0.0.1 --shardsvr --dbpath <span class="string">"F:\mongodbSet\shared\mongodb2\data"</span> --logpath <span class="string">"F:\mongodbSet\shared\mongodb2\log\mongodb.log"</span> --logappend --replSet shard</span><br><span class="line">mongod --port 27026 --bind_ip 127.0.0.1 --shardsvr --dbpath <span class="string">"F:\mongodbSet\shared\mongodb3\data"</span> --logpath <span class="string">"F:\mongodbSet\shared\mongodb3\log\mongodb.log"</span> --logappend --replSet shard</span><br><span class="line"></span><br><span class="line"><span class="comment">#mongos</span></span><br><span class="line">mongos --port 27021 --configdb configs/127.0.0.1:27018,127.0.0.1:27019,127.0.0.1:27020  --replSet mongos</span><br></pre></td></tr></table></figure></p>
+<h3 id="相关命令解释"><a href="#相关命令解释" class="headerlink" title="相关命令解释"></a>相关命令解释</h3><ul>
+<li>–port &lt;端口号&gt;： 设置mongo服务开启的端口</li>
+<li>–dbpath &lt;数据存储路径&gt;：设置mongo数据存储路径      </li>
+<li>–logpath  &lt;日志存储路径&gt;：设置mongo日志存储路径</li>
+<li>–logappend ：启用日志追加方式，否则新日志会覆盖旧日志</li>
+<li>–master ：设置为master方</li>
+<li>–slave：设置为slave方</li>
+<li>–source = &lt; ip : port&gt;：设置master服务的地址</li>
+<li>–replSet &lt;集群名&gt;：设置集群名称</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -531,7 +1451,7 @@
           
             <hr>
 
-    <div id="aplayer-LFpRVlAx" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+    <div id="aplayer-IzPbcDof" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
 <hr>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~</p>
@@ -819,7 +1739,7 @@
           
             <hr>
 
-    <div id="aplayer-iAolfrcD" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+    <div id="aplayer-LNWgcvNp" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
 <hr>
 <blockquote>
 <p>翻译原文：<a href="https://github.com/angular/flex-layout/wiki/Declarative-API-Overview" target="_blank" rel="noopener">https://github.com/angular/flex-layout/wiki/Declarative-API-Overview</a></p>
@@ -1134,7 +2054,7 @@
           
             <hr>
 
-    <div id="aplayer-ixLWisfR" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+    <div id="aplayer-EiwNAuLj" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
 <hr>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~</p>
@@ -1357,7 +2277,7 @@
           
             <hr>
 
-    <div id="aplayer-PfcxJXTV" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+    <div id="aplayer-zbgGsPwM" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
 <hr>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~</p>
@@ -1581,7 +2501,7 @@
           
             <hr>
 
-    <div id="aplayer-dfTpdUKp" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+    <div id="aplayer-pWIJyLzQ" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
 <hr>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~</p>
@@ -1828,7 +2748,7 @@ deactivate #退出虚拟环境
           
             <hr>
 
-    <div id="aplayer-KHEDoknB" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+    <div id="aplayer-ndvfUHJw" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
 <hr>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">BSTreeNode</span>&#123;</span></span><br><span class="line">	T key;</span><br><span class="line">	BSTreeNode *left;</span><br><span class="line">	BSTreeNode *right;</span><br><span class="line">	BSTreeNode *parent;</span><br><span class="line">	BSTreeNode(T k )&#123;</span><br><span class="line">		key=k;</span><br><span class="line">		left=<span class="literal">NULL</span>;</span><br><span class="line">		right=<span class="literal">NULL</span>;</span><br><span class="line">		parent=<span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	BSTreeNode()&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//错误信息</span></span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">ErrorMessage</span>&#123;</span></span><br><span class="line">	<span class="keyword">bool</span> flag;</span><br><span class="line">	<span class="built_in">string</span> message;</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//生成节点并插入树中</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">ErrorMessage</span> <span class="title">insert</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* &amp;<span class="title">root</span>,<span class="title">T</span> <span class="title">key</span>)&#123;</span></span><br><span class="line">	BSTreeNode&lt;T&gt;* node=<span class="literal">NULL</span>;</span><br><span class="line">	ErrorMessage error;</span><br><span class="line">	<span class="built_in">stringstream</span>  s;</span><br><span class="line">	<span class="keyword">if</span> ((node=<span class="keyword">new</span> BSTreeNode&lt;T&gt;(key)) == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		s&lt;&lt;<span class="string">"值"</span>&lt;&lt;key&lt;&lt;<span class="string">"分配节点内存失败"</span>;</span><br><span class="line">		error.flag=<span class="literal">false</span>;</span><br><span class="line">		error.message= s.str();</span><br><span class="line">		<span class="keyword">return</span> error;</span><br><span class="line">	&#125;</span><br><span class="line">	BSTreeNode&lt;T&gt;* x= root;</span><br><span class="line">	BSTreeNode&lt;T&gt;* y= <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">while</span> (x !=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		y=x;</span><br><span class="line">		<span class="keyword">if</span> (node-&gt;key&lt;x-&gt;key)</span><br><span class="line">		&#123;</span><br><span class="line">			x=x-&gt;left;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(node-&gt;key&gt;x-&gt;key)&#123;</span><br><span class="line">			x=x-&gt;right;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			s&lt;&lt;<span class="string">"值"</span>&lt;&lt;key&lt;&lt;<span class="string">"重复,创建节点失败"</span>;</span><br><span class="line">			error.flag=<span class="literal">false</span>;</span><br><span class="line">			error.message=s.str();</span><br><span class="line">			<span class="keyword">return</span> error;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	node-&gt;parent=y;</span><br><span class="line">	<span class="keyword">if</span> (y==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		root = node;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(node-&gt;key&lt;y-&gt;key)&#123;</span><br><span class="line">		y-&gt;left=node;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span>&#123;</span><br><span class="line">		y-&gt;right=node;</span><br><span class="line">	&#125;</span><br><span class="line">	s&lt;&lt;<span class="string">"值"</span>&lt;&lt;key&lt;&lt;<span class="string">"创建节点成功"</span>;</span><br><span class="line">	error.flag=<span class="literal">true</span>;</span><br><span class="line">	error.message=s.str();</span><br><span class="line">	<span class="keyword">return</span> error;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//前序遍历</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span> &gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">preShow</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">node</span>)&#123;</span></span><br><span class="line">	<span class="keyword">if</span> (node != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;node-&gt;key&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">		preShow(node-&gt;left);</span><br><span class="line">		preShow(node-&gt;right);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//中序遍历</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">midShow</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">node</span>)&#123;</span></span><br><span class="line">	<span class="keyword">if</span> (node !=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		midShow(node-&gt;left);</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;node-&gt;key&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">		midShow(node-&gt;right);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//后序遍历</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span> &gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">postShow</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">node</span>)&#123;</span></span><br><span class="line">	<span class="keyword">if</span> (node != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;node-&gt;key&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">		postShow(node-&gt;left);</span><br><span class="line">		postShow(node-&gt;right);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查找节点树下包含key的节点</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span> &gt;</span></span><br><span class="line"><span class="class"><span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">search</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">node</span>,<span class="title">T</span> <span class="title">key</span>)&#123;</span></span><br><span class="line">	<span class="keyword">if</span> (node == <span class="literal">NULL</span> || node-&gt;key == key)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> node;</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (node-&gt;key&gt;key)</span><br><span class="line">		&#123;</span><br><span class="line">			search(node-&gt;left,key);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (node-&gt;key&lt;key)</span><br><span class="line">		&#123;</span><br><span class="line">			search(node-&gt;right,key);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 返回节点树中最大值的节点</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span> &gt;</span></span><br><span class="line"><span class="class"><span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">maxNode</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">node</span>)&#123;</span></span><br><span class="line">	<span class="keyword">if</span> (node==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (node-&gt;right==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> node;</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		maxNode(node-&gt;right);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回节点树中最小值的节点</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span> &gt;</span></span><br><span class="line"><span class="class"><span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">minNode</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">node</span>)&#123;</span></span><br><span class="line">	<span class="keyword">if</span> (node==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (node-&gt;left==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> node;</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		minNode(node-&gt;left);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//返回传入节点的后继节点</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">successor</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">node</span>)&#123;</span></span><br><span class="line">	<span class="keyword">if</span>(node == <span class="literal">NULL</span>)&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (node-&gt;right!=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> minNode(node-&gt;right);</span><br><span class="line">	&#125;</span><br><span class="line">	BSTreeNode&lt;T&gt;* parent=node-&gt;parent;</span><br><span class="line">	BSTreeNode&lt;T&gt;* child=node;</span><br><span class="line">	<span class="keyword">while</span>(parent!=<span class="literal">NULL</span>&amp;&amp;parent-&gt;left!=child)&#123;</span><br><span class="line">		child=parent;</span><br><span class="line">		parent=parent-&gt;parent;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> parent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回传入节点的前驱节点</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">predecessor</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">node</span>)&#123;</span></span><br><span class="line">	<span class="keyword">if</span> (node == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (node-&gt;left!=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> maxNode(node-&gt;left);</span><br><span class="line">	&#125;</span><br><span class="line">	BSTreeNode&lt;T&gt;* parent=node-&gt;parent;</span><br><span class="line">	BSTreeNode&lt;T&gt;* child=node;</span><br><span class="line">	<span class="keyword">while</span>(parent!=<span class="literal">NULL</span>&amp;&amp;parent-&gt;right!=child)&#123;</span><br><span class="line">		child=parent;</span><br><span class="line">		parent=parent-&gt;parent;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> parent;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//删除节点</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">delete_node</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* &amp;<span class="title">root</span>, <span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">node</span>)&#123;</span></span><br><span class="line">	<span class="keyword">if</span> (node-&gt;left==<span class="literal">NULL</span>&amp;&amp;node-&gt;right==<span class="literal">NULL</span>) <span class="comment">//叶子节点</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (node == root)</span><br><span class="line">		&#123;</span><br><span class="line">			root=<span class="literal">NULL</span>;</span><br><span class="line">		&#125; </span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (isLeft(node))</span><br><span class="line">		&#123;</span><br><span class="line">			node-&gt;parent-&gt;left=<span class="literal">NULL</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			node-&gt;parent-&gt;right=<span class="literal">NULL</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (node-&gt;left==<span class="literal">NULL</span>) <span class="comment">//只有右子节点</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (node == root) <span class="comment">//节点是根节点</span></span><br><span class="line">		&#123;</span><br><span class="line">			root=node-&gt;right;</span><br><span class="line">			node-&gt;right-&gt;parent=<span class="literal">NULL</span>;</span><br><span class="line">		&#125; </span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (isLeft(node)) <span class="comment">//节点是左节点</span></span><br><span class="line">		&#123;</span><br><span class="line">			node-&gt;parent-&gt;left=node-&gt;right;</span><br><span class="line">			node-&gt;right-&gt;parent=node-&gt;parent;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123; <span class="comment">//节点是右节点</span></span><br><span class="line">			node-&gt;parent-&gt;right=node-&gt;right;</span><br><span class="line">			node-&gt;right-&gt;parent=node-&gt;parent;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (node-&gt;right==<span class="literal">NULL</span>) <span class="comment">//只有左节点</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (node == root) <span class="comment">//节点是根节点</span></span><br><span class="line">		&#123;</span><br><span class="line">			root=node-&gt;left;</span><br><span class="line">			node-&gt;left-&gt;parent=<span class="literal">NULL</span>;</span><br><span class="line">		&#125; </span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (isLeft(node)) <span class="comment">//节点是左节点</span></span><br><span class="line">		&#123;</span><br><span class="line">			node-&gt;parent-&gt;left=node-&gt;left;</span><br><span class="line">			node-&gt;left-&gt;parent=node-&gt;parent;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123; <span class="comment">//节点是右节点</span></span><br><span class="line">			node-&gt;parent-&gt;right=node-&gt;left;</span><br><span class="line">			node-&gt;left-&gt;parent=node-&gt;parent;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span> <span class="comment">//左右节点都有</span></span><br><span class="line">	&#123;</span><br><span class="line">		BSTreeNode&lt;T&gt;* suc= successor(node); <span class="comment">//node 的后继节点</span></span><br><span class="line">		<span class="keyword">if</span> (suc == node-&gt;right) <span class="comment">//后继节点为右子节点</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (node == root)<span class="comment">// 删除节点为根节点</span></span><br><span class="line">			&#123;</span><br><span class="line">				root=suc;</span><br><span class="line">				suc-&gt;left=node-&gt;left;</span><br><span class="line">				node-&gt;left-&gt;parent=suc;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span>&#123;<span class="comment">// 删除节点不为根节点</span></span><br><span class="line">				<span class="keyword">if</span> (isLeft(node)) <span class="comment">//删除节点为左节点</span></span><br><span class="line">				&#123; </span><br><span class="line">					node-&gt;parent-&gt;left= suc;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span>&#123; <span class="comment">// 删除节点为右节点</span></span><br><span class="line">					node-&gt;parent-&gt;right=suc;</span><br><span class="line">				&#125;</span><br><span class="line">				suc-&gt;parent=node-&gt;parent;</span><br><span class="line">				suc-&gt;left=node-&gt;left;</span><br><span class="line">				node-&gt;left-&gt;parent=suc;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="comment">//后继节点不为右子节点</span></span><br><span class="line">		&#123; </span><br><span class="line">			suc-&gt;parent-&gt;left=suc-&gt;right;</span><br><span class="line">			<span class="keyword">if</span> (suc-&gt;right!=<span class="literal">NULL</span>) <span class="comment">// 后继节点的右节点不空</span></span><br><span class="line">			&#123;</span><br><span class="line">				suc-&gt;right-&gt;parent= suc-&gt;parent;</span><br><span class="line">			&#125;</span><br><span class="line">			suc-&gt;left =node-&gt;left;</span><br><span class="line">			node-&gt;left-&gt;parent =suc;</span><br><span class="line">			suc-&gt;right=node-&gt;right;</span><br><span class="line">			node-&gt;right-&gt;parent =suc;</span><br><span class="line">			suc-&gt;parent=node-&gt;parent;</span><br><span class="line">			<span class="keyword">if</span> (node==root)</span><br><span class="line">			&#123;</span><br><span class="line">				root=suc;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">delete</span> node;</span><br><span class="line">	node=<span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">bool</span> <span class="title">deleteByKey</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* &amp;<span class="title">root</span>, <span class="title">T</span> <span class="title">key</span>)&#123;</span></span><br><span class="line">	BSTreeNode&lt;T&gt;* node= search(root,key);</span><br><span class="line">	<span class="keyword">if</span> (node == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span>&#123;</span><br><span class="line">		delete_node(root,node);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 判断是否为左节点</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">bool</span> <span class="title">isLeft</span>(<span class="title">BSTreeNode</span>&lt;T&gt;* <span class="title">node</span>)&#123;</span></span><br><span class="line">	<span class="keyword">if</span> (node-&gt;parent!=<span class="literal">NULL</span>&amp;&amp;node-&gt;parent-&gt;left==node)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"> </span><br><span class="line">	BSTreeNode&lt;<span class="keyword">int</span>&gt;* root=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;insert(root,<span class="number">5</span>).message&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;insert(root,<span class="number">3</span>).message&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;insert(root,<span class="number">1</span>).message&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;insert(root,<span class="number">2</span>).message&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"前序"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	preShow(root);</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"中序"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	midShow(root);</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"后序"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	postShow(root);</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">if</span> (search(root,<span class="number">4</span>) != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;<span class="string">"存在"</span>&lt;&lt;<span class="number">4</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;<span class="string">"不存在"</span>&lt;&lt;<span class="number">4</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"最大值:"</span>&lt;&lt;maxNode(root)-&gt;key&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"最小值:"</span>&lt;&lt;minNode(root)-&gt;key&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"3的后继:"</span>&lt;&lt;successor(search(root,<span class="number">3</span>))-&gt;key&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"3的前驱:"</span>&lt;&lt;predecessor(search(root,<span class="number">3</span>))-&gt;key&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">if</span> (	deleteByKey(root,<span class="number">5</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;<span class="string">"5删除成功"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;<span class="string">"5删除成功"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"中序"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	midShow(root);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -1871,921 +2791,11 @@ deactivate #退出虚拟环境
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/ada9fa1e.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="cloudintheking">
-      <meta itemprop="description" content="北落师门">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cloudintheking">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/ada9fa1e.html" itemprop="url">
-                  npm 升级失败解决方案
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-14 12:44:37" itemprop="dateCreated datePublished" datetime="2018-07-14T12:44:37+08:00">2018-07-14</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/问题总结篇/" itemprop="url" rel="index"><span itemprop="name">问题总结篇</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/ada9fa1e.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/ada9fa1e.html" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">900</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">1 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-
-    <div id="aplayer-MtZCwGAF" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
-<hr>
-<blockquote>
-<p>个人笔记，如有描述不当，欢迎留言指出~</p>
-</blockquote>
-<h2 id="说一下我的开发环境："><a href="#说一下我的开发环境：" class="headerlink" title="说一下我的开发环境："></a>说一下我的开发环境：</h2><ul>
-<li>Windows 10 </li>
-<li>node 8.10.0</li>
-<li>nvm 1.1.6</li>
-</ul>
-<p>npm这个东东其实也不会经常去升级它，但因为要安装angular cli,提示我npm版本低了得升级，这才去升级，哪晓得一个简单npm升级居然就炸了。</p>
-<h2 id="error"><a href="#error" class="headerlink" title="error:"></a>error:</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm ERR! path C:\Program Files\nodejs\npm.cmd npm ERR! code EEXIST npm ERR! Refusing to delete C:\Program Files\nodejs\npm.cmd: is outside C:\Program Files\nodejs\node_modules\npm and not a link npm ERR! File exists: C:\Program Files\nodejs\npm.cmd npm ERR! Move it away, and try again.</span><br></pre></td></tr></table></figure>
-<p>提示我移除C:\Program Files\nodejs\npm.cmd这个文件，可这个文件不是npm的命令文件吗，把这移除了，那我命令行里敲npm xxx什么的不都执行不了吗？算了，先按提示来吗，我移除了npm.cmd，嗯，这下好了，npm -v 都报错了。</p>
-<p>百度了半天也没找到类似的错误，最后没办法，只好使出那一招了，大科学上网术！（翻墙谷歌）<img src="http://fatboa.gz.bcebos.com/img/posts/npm%E5%8D%87%E7%BA%A7%E5%A4%B1%E8%B4%A5/0AEBCAF6.jpg?authorization=bce-auth-v1%2Fb6f23434344c421e8a830ea644d98122%2F2018-08-06T06%3A33%3A29Z%2F-1%2Fhost%2Fd3da2671777826752cd65bb645b8a44ae4fce1614976e9f11cc7a627859abd8e" alt="|100*0"></p>
-<p>很快就找到类似的错误了，给我激动的哇  <a href="https://github.com/coreybutler/nvm-windows/issues/300" target="_blank" rel="noopener">issues</a></p>
-<p>至于为啥会报这种错，我琢磨着可能是因为我从npm5.x.x升级到6.x.x，跨了一个大版本的原因吧，后来从npm6.1.0正常升到6.3.0就没报错了</p>
-<h2 id="解决方案如下："><a href="#解决方案如下：" class="headerlink" title="解决方案如下："></a>解决方案如下：</h2><ul>
-<li>首先将你nodejs安装目录下的 node_modules/npm文件夹  复制到任意路径下</li>
-<li>再将nodejs安装目录下的npm.bin、npm.cmd删了</li>
-<li>最后进入第一步复制的xxx/npm/bin目录下，执行node npm-cli.js i -g npm@latest 命令，欧了！</li>
-</ul>
-<p>我是真滴佩服想出这个办法的仁兄，高，太高了</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/c4e70f88.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="cloudintheking">
-      <meta itemprop="description" content="北落师门">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cloudintheking">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/c4e70f88.html" itemprop="url">
-                  windows下安装nvm及nrm
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-12 09:14:12" itemprop="dateCreated datePublished" datetime="2018-07-12T09:14:12+08:00">2018-07-12</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/环境安装篇/" itemprop="url" rel="index"><span itemprop="name">环境安装篇</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/c4e70f88.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/c4e70f88.html" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">3k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">3 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-
-    <div id="aplayer-KiBKQPWW" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
-<hr>
-<blockquote>
-<p>个人笔记，如有描述不当，欢迎留言指出~</p>
-</blockquote>
-<h2 id="nvm"><a href="#nvm" class="headerlink" title="nvm"></a>nvm</h2><h3 id="nvm是什么以及应用场景"><a href="#nvm是什么以及应用场景" class="headerlink" title="nvm是什么以及应用场景"></a>nvm是什么以及应用场景</h3><p>基于node的项目对node版本依赖是不同的，而电脑上只安装了一个node的版本，那显然是不够的。所以nvm（Node Version Manager），一个node版本管理工具就诞生了。它就就像是一个开关，切换系统里不同的node版本，切记同一时刻有且只有一个node版本生效，node8和node10不能同时存在。</p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>如果你已经装了node了，建议完全卸载了（连同npm，还有环境变量）,如果不卸载的话可能会和nvm发生冲突 <a href="https://github.com/coreybutler/nvm-windows/releases" target="_blank" rel="noopener">下载地址</a>  </p>
-<p>它有两个版本 <strong>nvm-noinstall.zip</strong>(免安装) 、<strong>nvm-setup.zip</strong>(图形界面安装GUI)，它们两个区别只在于免安装需要自己手动配置环境变量而GUI版给你自动配好了，下面基于GUI版简单说明一下：</p>
-<p>当你安装到这一步时，选择nvm的安装目录，我这里是：D:\Environment\nvm</p>
-<p><img src="http://fatboa.gz.bcebos.com/img/posts/nvm%E5%AE%89%E8%A3%85/1533348466236.png?authorization=bce-auth-v1%2Fb6f23434344c421e8a830ea644d98122%2F2018-08-06T06%3A34%3A36Z%2F-1%2Fhost%2F8eaba57f15a93f0ab5634d7cc20a9f5dbdc4b36bbb4fd6159dfee41aae896b5b" alt="1533348466236"></p>
-<p>这一步是设置创建一个链接目录指向真正的node的安装目录，我这里是：D:\Environment\nodejs</p>
-<p><img src="http://fatboa.gz.bcebos.com/img/posts/nvm%E5%AE%89%E8%A3%85/1533348746705.png?authorization=bce-auth-v1%2Fb6f23434344c421e8a830ea644d98122%2F2018-08-06T06%3A35%3A04Z%2F-1%2Fhost%2Fb314b8708c08276f6ad7cadadd1c59a3a642654773cb297506cb42fb3ff1990f" alt="1533348746705"></p>
-<p>一直next直到安装完成，期间的所有环境变量都会自动加入系统路径中（方便！）</p>
-<h3 id="配置settings-txt"><a href="#配置settings-txt" class="headerlink" title="配置settings.txt"></a>配置settings.txt</h3><ul>
-<li><p>如果你是免安装，有两种方法</p>
-<ol>
-<li><p>我们打开免安装目录下的install.cmd文件，内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@echo off</span><br><span class="line">set /P NVM_PATH=&quot;Enter the absolute path where the zip file is extracted/copied to: &quot; #输入nvm安装目录路径</span><br><span class="line">setx /M NVM_HOME &quot;%NVM_PATH%&quot; #将你输入的路径赋给NVM_HOME环境变量</span><br><span class="line">setx /M NVM_SYMLINK &quot;C:\Program Files\nodejs&quot; #默认路径赋给NVM_SYMLINK变量，可以将默认路径修改成任意路径</span><br><span class="line">setx /M PATH &quot;%PATH%;%NVM_HOME%;%NVM_SYMLINK%&quot; #将NVM_HOME、NVM_SYMLINK将入PATH中</span><br><span class="line"></span><br><span class="line">if exist &quot;%SYSTEMDRIVE%\Program Files (x86)\&quot; (</span><br><span class="line">set SYS_ARCH=64</span><br><span class="line">) else (</span><br><span class="line">set SYS_ARCH=32</span><br><span class="line">)</span><br><span class="line">(echo root: %NVM_HOME% &amp;&amp; echo path: %NVM_SYMLINK% &amp;&amp; echo arch: %SYS_ARCH% &amp;&amp; echo proxy: none) &gt; %NVM_HOME%\settings.txt #在nvm目录下生成settings.txt</span><br><span class="line"></span><br><span class="line">notepad %NVM_HOME%\settings.txt</span><br><span class="line">@echo on</span><br></pre></td></tr></table></figure>
-<p>简单点说，install.cmd的作用就是帮你自动配置环境变量并生成settings.txt。</p>
-</li>
-<li><p>当然你也可以不用install.cmd，自己手动创建settings.txt，手动配置环境变量，毕竟自己动手，丰衣足食<img src="http://fatboa.gz.bcebos.com/img/posts/nvm%E5%AE%89%E8%A3%85/0A808D0B.jpg?authorization=bce-auth-v1%2Fb6f23434344c421e8a830ea644d98122%2F2018-08-06T06%3A35%3A38Z%2F-1%2Fhost%2F3b8cd5cf0974eeeb5a8e70e80aa09c1adfe86320fe3b03ad381e5dcb2bdd6a6e" alt="img"></p>
-</li>
-</ol>
-</li>
-<li><p>如果你是GUI安装，直接打开nvm安装目录下的settings.txt ，修改如下：</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root: D:\Environment\nvm  //改成你的nvm安装目录</span><br><span class="line">path: D:\Environment\nodejs //改成你的nvm安装目录</span><br><span class="line">arch: 64 //你的系统指令架构64位，默认的不必修改</span><br><span class="line">proxy: none //代理配置，无</span><br><span class="line">node_mirror: http://npm.taobao.org/mirrors/node/  //node镜像源</span><br><span class="line">npm_mirror: https://npm.taobao.org/mirrors/npm/   //npm镜像源</span><br></pre></td></tr></table></figure>
-<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><ul>
-<li><p>如果你是通过GUI安装的，那么你的环境变量已经自动配好了，你可以跳过这一步，也可以跟着看下去，看看自动配置是否有误</p>
-</li>
-<li><p>如果你是免安装又不想用install.cmd的话，建议在个人环境变量中加入下面的参数，因为这样不会扰乱系到统环境变量 ，快捷打开环境变量界面：windows+r =&gt; sysdm.cpl</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NVM_HOME： D:\Environment\nvm  //改成你的nvm安装目录</span><br><span class="line">NVM_SYMLINK ：  D:\Environment\nodejs //改成你的nodejs链接目录</span><br></pre></td></tr></table></figure>
-<p>最后别忘了，在PATH里加上 <strong>;%NVM_HOME%;%NVM_SYMLINK%;</strong> </p>
-</li>
-</ul>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>打开控制台，输入：nvm version,若是出现版本信息，则安装成功。若报错，那就面壁思过，我讲的辣么详细。</p>
-<p>这里介绍一些常用命令，剩下自己探索吧</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nvm install &lt;version&gt; [arch] ：version是版本号、arch是系统位数，默认64位，比如：nvm install 8.10.0  安装64位的nodejs8.10.0</span><br><span class="line">nvm uninstall &lt;version&gt; ：删除对应node版本</span><br><span class="line">nvm list ：会显示你系统中安装的所有node版本，并标明当前应用的那个node版本</span><br><span class="line">nvm use [version] [arch] ：选择生效哪个node版本</span><br></pre></td></tr></table></figure>
-<h2 id="nrm"><a href="#nrm" class="headerlink" title="nrm"></a>nrm</h2><h3 id="nrm是什么及应用场景"><a href="#nrm是什么及应用场景" class="headerlink" title="nrm是什么及应用场景"></a>nrm是什么及应用场景</h3><p>nrm（npm registry manager ），npm 镜像源管理工具。有时候访问国外资源太慢了，我们就得更换npm的源，命令是npm config set registry xxxxxxxx,考虑到有的公司还有私有源，如果每次更改源都要敲那么长的命令，那效率太低了。but nrm替我们管理了这些源，我们只需要简单的切换一下！</p>
-<h3 id="安装及使用"><a href="#安装及使用" class="headerlink" title="安装及使用"></a>安装及使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">npm install -g nrm      直接使用npm全局安装即可</span><br><span class="line">nrm --help</span><br><span class="line">Usage: nrm [options] [command]</span><br><span class="line">Commands:</span><br><span class="line">ls                           列出所有的源</span><br><span class="line">current                      显示当前源的名称</span><br><span class="line">use &lt;registry&gt;               切换源</span><br><span class="line">add &lt;registry&gt; &lt;url&gt; [home]  添加源</span><br><span class="line">del|rm &lt;registry&gt;            删除原</span><br><span class="line">home &lt;registry&gt; [browser]    打开源的官方主页</span><br><span class="line">test [registry]              测试下这些源的响应时间</span><br><span class="line">help                         print this help</span><br><span class="line">Options:</span><br><span class="line">-h, --help     output usage information</span><br><span class="line">-V, --version  output the version number</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/84d9992c.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="cloudintheking">
-      <meta itemprop="description" content="北落师门">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cloudintheking">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/84d9992c.html" itemprop="url">
-                  springboot多数据源配置
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-06 14:28:48" itemprop="dateCreated datePublished" datetime="2018-07-06T14:28:48+08:00">2018-07-06</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端笔记/" itemprop="url" rel="index"><span itemprop="name">后端笔记</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/84d9992c.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/84d9992c.html" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">10k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">9 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-
-    <div id="aplayer-welwqHzs" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
-<hr>
-<blockquote>
-<p>个人笔记，如有描述不当，欢迎留言指出~</p>
-</blockquote>
-<h3 id="项目结构图"><a href="#项目结构图" class="headerlink" title="项目结构图"></a>项目结构图</h3><p><img src="http://fatboa.gz.bcebos.com/img/posts/springboot%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AE/projectmulu1.png?authorization=bce-auth-v1%2Fb6f23434344c421e8a830ea644d98122%2F2018-09-09T14%3A30%3A26Z%2F-1%2Fhost%2F4e772e91500e74dd4eb1c25bbeb699223eda7906464fb2b659163999d1956d09" alt="@图1" title="图一"><br><img src="http://fatboa.gz.bcebos.com/img/posts/springboot%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AE/projectmulu2.png?authorization=bce-auth-v1%2Fb6f23434344c421e8a830ea644d98122%2F2018-09-09T14%3A31%3A02Z%2F-1%2Fhost%2Fe21e4a3f01b5301fcd4161d5381e989bd9372c8b8a8c6cb280e6546b7ed3dd26" alt="@图2" title="图二"></p>
-<h3 id="相关配置"><a href="#相关配置" class="headerlink" title="相关配置"></a>相关配置</h3><h4 id="pom-xml"><a href="#pom-xml" class="headerlink" title="pom.xml"></a>pom.xml</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mymultidata<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>ahuang<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>ahuang<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span>Demo project for Spring Boot<span class="tag">&lt;/<span class="name">description</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">parent</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.5.12.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">relativePath</span>/&gt;</span>  </span><br><span class="line">    <span class="comment">&lt;!-- lookup parent from repository --&gt;</span> </span><br><span class="line">  <span class="tag">&lt;/<span class="name">parent</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">properties</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">project.build.sourceEncoding</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">project.reporting.outputEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">project.reporting.outputEncoding</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;/<span class="name">properties</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-jpa<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">build</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span> </span><br><span class="line">      <span class="tag">&lt;<span class="name">plugin</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">      <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;/<span class="name">build</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h4 id="application-properties"><a href="#application-properties" class="headerlink" title="application.properties"></a>application.properties</h4><figure class="highlight profile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#主数据源</span><br><span class="line">spring.datasource.primary.url=jdbc:mysql://localhost:<span class="number">3306</span>/test1?useUnicode=true&amp;characterEncoding=utf<span class="number">-8</span>&amp;serverTimezone=UTC&amp;useSSL=true</span><br><span class="line">spring.datasource.primary.username=root</span><br><span class="line">spring.datasource.primary.password=xxxxxx</span><br><span class="line">spring.datasource.primary.driver-class-name=com.mysql.jdbc.Driver</span><br><span class="line">spring.datasource.max-active=10</span><br><span class="line">spring.datasource.primary.max-idle=5</span><br><span class="line">spring.datasource.primary.min-idle=0</span><br><span class="line">#次数据源</span><br><span class="line">spring.datasource.secondary.url=jdbc:mysql://localhost:<span class="number">3306</span>/test2?useUnicode=true&amp;characterEncoding=utf<span class="number">-8</span>&amp;serverTimezone=UTC&amp;useSSL=true</span><br><span class="line">spring.datasource.secondary.username=root</span><br><span class="line">spring.datasource.secondary.password=xxxxxx</span><br><span class="line">spring.datasource.secondary.driver-class-name=com.mysql.jdbc.Driver</span><br><span class="line">spring.datasource.secondary.max-active=10</span><br><span class="line">spring.datasource.secondary.max-idle=5</span><br><span class="line">spring.datasource.secondary.min-idle=0</span><br><span class="line">#tomcat</span><br><span class="line">server.port=8082</span><br><span class="line">#hibernate配置</span><br><span class="line">spring.jpa.properties.hibernate.hbm2ddl.auto=update</span><br><span class="line">spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect</span><br><span class="line">spring.jpa.show-sql= true</span><br><span class="line">#mybatis配置</span><br><span class="line">mybatis.config-locations=classpath:mybatis/config.xml</span><br><span class="line">mybatis.mapper-locations=classpath:mybatis/mapper/*/*/*.xml</span><br></pre></td></tr></table></figure>
-<p><code>spring.datasource.primary.xxx</code>、<code>spring.datasource.secondary.xxx</code>并非springboot的默认参数，这些配置并不能生效，所以要自己定义下数据源配置类。<br>还记得config目录下DataSourceConfig.java这个类吗？这个类就是用来配置多个数据源的。</p>
-<h4 id="数据源配置"><a href="#数据源配置" class="headerlink" title="数据源配置"></a>数据源配置</h4><p><strong>DataSourceConfig.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mymultidata.ahuang.config;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> javax.sql.DataSource;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: hl</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: TODO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 13:55 2018/4/24</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> By:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataSourceConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span>(<span class="string">"primaryDataSource"</span>)</span><br><span class="line">    <span class="meta">@Qualifier</span>(<span class="string">"primaryDataSource"</span>)</span><br><span class="line">    <span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"spring.datasource.primary"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSource <span class="title">primaryDataSource</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> DataSourceBuilder.create().build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(<span class="string">"secondaryDataSource"</span>)</span><br><span class="line">    <span class="meta">@Qualifier</span>(<span class="string">"secondaryDataSource"</span>)</span><br><span class="line">    <span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"spring.datasource.secondary"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSource <span class="title">secondaryDataSource</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> DataSourceBuilder.create().build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p> <code>@ConfigurationProperties(prefix = &quot;spring.datasource.primary&quot;)</code>：找到application.properties里前缀为spring.datasource.primary的参数并自动注入值到DataSource中。我这里是准备将primary数据源集成jpa，secondary数据源集成mybaitis,这里只配了两个数据源，同学们可以举一反三，third,fourth…</p>
-</blockquote>
-<h4 id="数据源事务配置"><a href="#数据源事务配置" class="headerlink" title="数据源事务配置"></a>数据源事务配置</h4><h5 id="基于jpa"><a href="#基于jpa" class="headerlink" title="基于jpa"></a>基于jpa</h5><p><strong>PrimaryConfig.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">package</span> com.mymultidata.ahuang.config;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Primary;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.jpa.repository.config.EnableJpaRepositories;</span><br><span class="line"><span class="keyword">import</span> org.springframework.orm.jpa.JpaTransactionManager;</span><br><span class="line"><span class="keyword">import</span> org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.PlatformTransactionManager;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.annotation.EnableTransactionManagement;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.EntityManager;</span><br><span class="line"><span class="keyword">import</span> javax.sql.DataSource;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: hl</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: TODO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 14:23 2018/4/24</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> By:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableTransactionManagement</span></span><br><span class="line"><span class="comment">//entityManagerFactoryRef:引用实体管理工厂</span></span><br><span class="line"><span class="comment">// transactionManagerRef:引用事务管理工厂</span></span><br><span class="line"><span class="comment">// basePackages:设置jpa的repository接口类的包路径,可配置多个</span></span><br><span class="line"><span class="meta">@EnableJpaRepositories</span>(</span><br><span class="line">        entityManagerFactoryRef = <span class="string">"entityManagerFactoryPrimary"</span>,</span><br><span class="line">        transactionManagerRef = <span class="string">"transactionManagerPrimary"</span>,</span><br><span class="line">        basePackages = &#123;<span class="string">"com.mymultidata.ahuang.repository.jpa.jpa1"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PrimaryConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier</span>(<span class="string">"primaryDataSource"</span>)</span><br><span class="line">    <span class="keyword">private</span> DataSource primaryDataSource;<span class="comment">//注入primary数据源</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> JpaProperties jpaProperties;<span class="comment">//注入jpa全局参数</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"entityManagerPrimary"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> EntityManager <span class="title">entityManager</span><span class="params">(EntityManagerFactoryBuilder builder)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> entityManagerFactoryPrimary(builder).getObject().createEntityManager();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"entityManagerFactoryPrimary"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalContainerEntityManagerFactoryBean <span class="title">entityManagerFactoryPrimary</span> <span class="params">(EntityManagerFactoryBuilder builder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> builder</span><br><span class="line">                .dataSource(primaryDataSource)</span><br><span class="line">                .properties(getVendorProperties(primaryDataSource))</span><br><span class="line">                .packages(<span class="string">"com.mymultidata.ahuang.domain.jpa.jpa1"</span>) <span class="comment">//设置实体类所在位置</span></span><br><span class="line">                .persistenceUnit(<span class="string">"primaryPersistenceUnit"</span>)</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Map&lt;String, String&gt; <span class="title">getVendorProperties</span><span class="params">(DataSource dataSource)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> jpaProperties.getHibernateProperties(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"transactionManagerPrimary"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> PlatformTransactionManager <span class="title">transactionManagerPrimary</span><span class="params">(EntityManagerFactoryBuilder builder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> JpaTransactionManager(entityManagerFactoryPrimary(builder).getObject());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="基于mybatis"><a href="#基于mybatis" class="headerlink" title="基于mybatis"></a>基于mybatis</h5><p>SecondaryConfig.java:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mymultidata.ahuang.config;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.SqlSessionFactoryBean;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.SqlSessionTemplate;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.annotation.MapperScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.io.support.PathMatchingResourcePatternResolver;</span><br><span class="line"><span class="keyword">import</span> org.springframework.jdbc.datasource.DataSourceTransactionManager;</span><br><span class="line"><span class="keyword">import</span> javax.sql.DataSource;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: hl</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: TODO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 15:05 2018/4/24</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> By:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="comment">//basePackages:设置mapperj接口类所在位置</span></span><br><span class="line"><span class="meta">@MapperScan</span>(basePackages = &#123;<span class="string">"com.mymultidata.ahuang.repository.mybatis.mapper1"</span>&#125;,sqlSessionTemplateRef =<span class="string">"secondarySqlSessionTemplate"</span> )</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">secondaryConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier</span>(<span class="string">"secondaryDataSource"</span>)</span><br><span class="line">    <span class="keyword">private</span> DataSource dataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"secondarySqlSessionFactory"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">testSqlSessionFactory</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        SqlSessionFactoryBean bean = <span class="keyword">new</span> SqlSessionFactoryBean();</span><br><span class="line">        bean.setDataSource(dataSource);</span><br><span class="line">        bean.setMapperLocations(<span class="keyword">new</span> PathMatchingResourcePatternResolver().getResources(<span class="string">"classpath:mybatis/mapper/mapper1/*/*.xml"</span>));<span class="comment">//设置mapper.xml路径,路径中之所以加了'*'号，是为了项目的功能划分,方便分析,如果你的映射文件不做功能划分的话，可以改为"classpath:mybatis/mapper/mapper1/*.xml"</span></span><br><span class="line">        <span class="keyword">return</span> bean.getObject();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"secondaryTransactionManager"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSourceTransactionManager <span class="title">testTransactionManager</span><span class="params">(@Qualifier(<span class="string">"secondaryDataSource"</span>)</span> DataSource dataSource) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> DataSourceTransactionManager(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"secondarySqlSessionTemplate"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> SqlSessionTemplate <span class="title">testSqlSessionTemplate</span><span class="params">(@Qualifier(<span class="string">"secondarySqlSessionFactory"</span>)</span> SqlSessionFactory sqlSessionFactory) <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SqlSessionTemplate(sqlSessionFactory);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>到这里配置已经好了，剩下的就是结合业务去实现了。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/4a17b156.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="cloudintheking">
-      <meta itemprop="description" content="北落师门">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cloudintheking">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/4a17b156.html" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-04 21:53:56" itemprop="dateCreated datePublished" datetime="2018-07-04T21:53:56+08:00">2018-07-04</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/4a17b156.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/4a17b156.html" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">438</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">1 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-
-    <div id="aplayer-oAZMrVUe" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
-<hr>
-<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2832,7 +2842,7 @@ deactivate #退出虚拟环境
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2989,7 +2999,7 @@ deactivate #退出虚拟环境
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
@@ -3003,7 +3013,7 @@ deactivate #退出虚拟环境
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">93k</span>
+    <span title="站点总字数">102k</span>
   
 
   
@@ -3014,7 +3024,7 @@ deactivate #退出虚拟环境
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">1:25</span>
+    <span title="站点阅读时长">1:32</span>
   
 </div>
 

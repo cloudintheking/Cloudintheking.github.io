@@ -313,7 +313,7 @@
           
           <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档<span class="badge">20</span></a>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档<span class="badge">24</span></a>
   </li>
 
       
@@ -359,6 +359,844 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/3edeb9a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloudintheking">
+      <meta itemprop="description" content="北落师门">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloudintheking">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/3edeb9a.html" itemprop="url">
+                  powershell之启动远程jar服务
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2022-01-05 13:20:45 / 修改时间：13:21:21" itemprop="dateCreated datePublished" datetime="2022-01-05T13:20:45+08:00">2022-01-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/3edeb9a.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/3edeb9a.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">2.6k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">2 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>-<br>
+    <div id="aplayer-GSzQNuOw" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
+<blockquote>
+<p>个人笔记，如有描述不当，欢迎留言指出~</p>
+</blockquote>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>主管抽风说每次都要登录远程服务器再启动jar太麻烦了，要是有个一键启动远程jar的批处理就是。于是这个任务就交给我了…</p>
+<h2 id="powershell配置"><a href="#powershell配置" class="headerlink" title="powershell配置"></a>powershell配置</h2><p>用管理员权限启动 PowerShell,执行下面的命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#客户端或服务器公共配置:</span></span><br><span class="line">Get-Service WinRM   <span class="comment">#查看WinRM服务的状态</span></span><br><span class="line">Enable-PSRemoting –Force   <span class="comment">#配置系统接受远程命令</span></span><br><span class="line">Set-Service WinRM -StartMode Automatic   <span class="comment">#开启WinRM服务自启动</span></span><br><span class="line">winrm <span class="built_in">set</span> winrm/config/winrs <span class="string">'@&#123;MaxMemoryPerShellMB="3000"&#125;'</span>  <span class="comment">#设置powershell最大内存 方法一推荐</span></span><br><span class="line">Set-Item WSMan:\localhost\Plugin\Microsoft.PowerShell\Quotas\MaxMemoryPerShellMB 3000   <span class="comment">#设置最大内存 方法二</span></span><br><span class="line">Restart-Service winrm //重启winrm服务使配置生效</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#服务器配置:</span></span><br><span class="line">Set-Item WSMan:localhost\client\trustedhosts -value <span class="string">"192.168.1.44,192.168.1.45"</span>  <span class="comment">#设置设置主机可信任的客户端地址</span></span><br><span class="line">winrm <span class="built_in">set</span> winrm/config/client @&#123;TrustedHosts=<span class="string">"192.168.1.45,192.168.1.44"</span>&#125;  <span class="comment">#设置设置主机可信任的客户端地址，当上个命令无效时，可选用该命令（该命令请在cmd中使用） </span></span><br><span class="line">Get-Item WSMan:\localhost\Client\TrustedHosts  <span class="comment">#查看可信任主机</span></span><br><span class="line">get-executionpolicy  <span class="comment">#查看脚本执行策略</span></span><br><span class="line"><span class="built_in">set</span>-executionpolicy remotesigned  <span class="comment">#设置执行策略为远程可执行</span></span><br><span class="line">Restart-Service winrm <span class="comment">#重启服务生效</span></span><br><span class="line"></span><br><span class="line">Test-WsMan xxx.xxx.xxx.xxx <span class="comment">#客户端测试远程连接</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="jar包上传处理命令"><a href="#jar包上传处理命令" class="headerlink" title="jar包上传处理命令"></a>jar包上传处理命令</h2><blockquote>
+<p>服务器上必须安装了ftp,否则没法上传文件。我公司服务器系统是windows server 2008,用它自带的IIS创建ftp,并设置虚拟目录。</p>
+</blockquote>
+<p>新建上传文件脚本<strong>up.bat</strong>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST 192.168.1.44:8886/shutdown <span class="comment">#关闭44服务器上8886端口服务</span></span><br><span class="line">curl -X POST 192.168.1.44:8887/shutdown<span class="comment">#关闭44服务器上8887端口服务</span></span><br><span class="line">curl -X POST 192.168.1.44:8888/shutdown<span class="comment">#关闭44服务器上8888端口服务</span></span><br><span class="line"></span><br><span class="line">Echo open 192.168.1.44 &gt;ftp.up <span class="comment">#打开连接44服务器ftp连接</span></span><br><span class="line">Echo Administrator&gt;&gt;ftp.up <span class="comment">#服务器上登录用户名</span></span><br><span class="line">Echo 59@SDS25&gt;&gt;ftp.up <span class="comment">#登录密码</span></span><br><span class="line">Echo <span class="built_in">cd</span> .\project1&gt;&gt;ftp.up <span class="comment">#因为进入的是ftp的根目录，所以使用.\project1,进入根目录下的project1</span></span><br><span class="line">Echo binary&gt;&gt;ftp.up <span class="comment">#二进制数据传输格式</span></span><br><span class="line">Echo put <span class="string">"E:\Workspace\idea\jcnyJava\target\jcny-java-0.0.1-SNAPSHOT.jar"</span>&gt;&gt;ftp.up <span class="comment">#传送本地文件到ftp中</span></span><br><span class="line">Echo <span class="built_in">cd</span> ..\project2&gt;&gt;ftp.up <span class="comment">#使用..\project2,进入根目录下的project2目录</span></span><br><span class="line">Echo put <span class="string">"E:\Workspace\idea\jcnyJava\target\jcny-java-0.0.1-SNAPSHOT.jar.original"</span>&gt;&gt;ftp.up <span class="comment">#传送本地文件到ftp中</span></span><br><span class="line">Echo <span class="built_in">cd</span> ..\project3&gt;&gt;ftp.up <span class="comment">#进入根目录下的project3目录</span></span><br><span class="line">Echo put <span class="string">"E:\Workspace\idea\jcnyJava\target\jcny-java-0.0.1-SNAPSHOT.jar.original"</span>&gt;&gt;ftp.up <span class="comment">#传送本地文件到ftp中</span></span><br><span class="line">Echo <span class="built_in">bye</span>&gt;&gt;ftp.up <span class="comment">#客户端关闭ftp连接</span></span><br><span class="line">FTP -s:ftp.up <span class="comment">#服务器关闭ftp连接</span></span><br><span class="line">del ftp.up /q <span class="comment">#删除ftp连接</span></span><br><span class="line">Pause</span><br></pre></td></tr></table></figure></p>
+<h2 id="powershell启动远程服务命令"><a href="#powershell启动远程服务命令" class="headerlink" title="powershell启动远程服务命令"></a>powershell启动远程服务命令</h2><p>新建一个启动脚本<strong>deploy.ps1</strong><br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$na</span> = <span class="string">"yourname"</span>  <span class="comment">#服务器用户名</span></span><br><span class="line">                                                                       </span><br><span class="line"><span class="variable">$p2</span> = <span class="built_in">ConvertTo-SecureString</span> <span class="string">"yourpassword"</span> -AsPlainText -Force   <span class="comment">#加密登录密码                                    </span></span><br><span class="line"><span class="variable">$A</span> = <span class="built_in">New-Object</span> System.Management.Automation.PSCredential(<span class="variable">$na</span>,<span class="variable">$p2</span>) <span class="comment">#创建连接</span></span><br><span class="line"><span class="built_in">Invoke-Command</span> -ComputerName <span class="number">192.168</span>.<span class="number">1.44</span> -Credential <span class="variable">$A</span> -ScriptBlock &#123;  <span class="comment">#执行远程操作</span></span><br><span class="line"><span class="built_in">Set-Location</span> E:\webroot\projects   <span class="comment">#进入远程服务器目录</span></span><br><span class="line"><span class="built_in">invoke-expression</span> -command E:\webroot\tongtu-projects\startall.bat  <span class="comment">#远程服务启动的脚本路径</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>以上命令都是针对Windows系统的，Linux系统应该是写bash脚本吧。<br>如果下次主管说要一键启动远程Linux上的服务的话，到时候我再写篇linux的吧。</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/9885f22a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloudintheking">
+      <meta itemprop="description" content="北落师门">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloudintheking">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/9885f22a.html" itemprop="url">
+                  mongodb操作之$slice
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2022-01-05 13:14:55 / 修改时间：13:22:00" itemprop="dateCreated datePublished" datetime="2022-01-05T13:14:55+08:00">2022-01-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/9885f22a.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/9885f22a.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">2.8k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">3 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>-<br>
+    <div id="aplayer-OGUlOAfa" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
+<blockquote>
+<p>个人笔记，如有描述不当，欢迎留言指出~</p>
+</blockquote>
+<blockquote>
+<p>翻译原文：<a href="https://docs.mongodb.com/manual/reference/operator/update/slice/#examples" target="_blank" rel="noopener">https://docs.mongodb.com/manual/reference/operator/update/slice/#examples</a></p>
+</blockquote>
+<h2 id="slice（切分）"><a href="#slice（切分）" class="headerlink" title="$slice（切分）"></a>$slice（切分）</h2><p>当进行<code>$push</code>(插入)操作时，可以通过 <code>$slice</code>修饰词来限制插入的数组元素个数。如果想从一个只读操作中映射或是返回数组元素中特定的值，详见<a href="https://docs.mongodb.com/manual/reference/operator/projection/slice/#proj._S_slice" target="_blank" rel="noopener"><code>$slice</code></a>映射操作。<br><code>$slice</code>修饰词必须搭配<code>$each</code>修饰词才能使用。不过，你也可以传递一个空数组给<code>$each</code>修饰词，从而只让<code>$slice</code>修饰词起作用。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  $push: &#123;</span><br><span class="line">     &lt;field&gt;: &#123;</span><br><span class="line">       $each: [ &lt;value1&gt;, &lt;value2&gt;, ... ],</span><br><span class="line">       $slice: &lt;num&gt;</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&lt; <strong>num</strong> &gt; 的值可以是：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Value</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left">更新数组&lt;<strong>field</strong>&gt;为空数组</td>
+</tr>
+<tr>
+<td style="text-align:left">负数</td>
+<td style="text-align:left">更新数组&lt;<strong>field</strong>&gt;只包含最后&lt;<strong>num</strong>&gt;个元素</td>
+</tr>
+<tr>
+<td style="text-align:left">正数</td>
+<td style="text-align:left">更新数组&lt;<strong>field</strong>&gt;只包含开头&lt;<strong>num</strong>&gt;个元素，适用于2.6以上版本</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Behavior-行为"><a href="#Behavior-行为" class="headerlink" title="Behavior(行为)"></a>Behavior(行为)</h2><p>这些修饰词出现的顺序是无关紧要的。不过在上一个版本中，要求<code>$each</code>修饰词得作为第一个修饰词出现，如果要和<code>$slice</code>修饰词连用的话。这里有一份关于和<code>$push</code>搭配使用的修饰词列表，详见<a href="https://docs.mongodb.com/manual/reference/operator/update/push/#push-modifiers" target="_blank" rel="noopener">Modifiers</a>。<br>不结合<code>$each</code>修饰词而只使用<code>$slice</code>修饰词将会导致出错，不信可以试试。</p>
+<h2 id="栗子"><a href="#栗子" class="headerlink" title="栗子"></a>栗子</h2><h3 id="从数组末尾切片"><a href="#从数组末尾切片" class="headerlink" title="从数组末尾切片"></a>从数组末尾切片</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">1</span>, <span class="attr">"scores"</span> : [ <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面的操作增加一个新元素到<strong>scores</strong>数组中，然后使用<code>$slice</code>将数组修剪为最后五个元素。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">   &#123; _id: 1 &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     $push: &#123;</span><br><span class="line">       scores: &#123;</span><br><span class="line">         $each: [ 80, 78, 86 ],</span><br><span class="line">         $slice: -5</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>操作的结果就是将更新后的<strong>scores</strong>数组切分为最后5个元素<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">1</span>, <span class="attr">"scores"</span> : [  <span class="number">50</span>,  <span class="number">60</span>,  <span class="number">80</span>,  <span class="number">78</span>,  <span class="number">86</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="从数组头部切片"><a href="#从数组头部切片" class="headerlink" title="从数组头部切片"></a>从数组头部切片</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">2</span>, <span class="attr">"scores"</span> : [ <span class="number">89</span>, <span class="number">90</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面的操作增加一个新元素到<strong>scores</strong>数组中，然后使用<code>$slice</code>修饰词修剪为前三个元素。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">   &#123; _id: 2 &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     $push: &#123;</span><br><span class="line">       scores: &#123;</span><br><span class="line">         $each: [ 100, 20 ],</span><br><span class="line">         $slice: 3</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>操作的结果就是将更新后的<strong>scores</strong>数组切分为前三个元素中。</p>
+<h3 id="只用slice来更新数组"><a href="#只用slice来更新数组" class="headerlink" title="只用slice来更新数组"></a>只用slice来更新数组</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">3</span>, <span class="attr">"scores"</span> : [  <span class="number">89</span>,  <span class="number">70</span>,  <span class="number">100</span>,  <span class="number">20</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
+<p>为了只用<code>$slice</code>修饰词来更新<strong>scores</strong>字段，我们得给出要切分的元素数量（比如 -3）赋给<code>slice</code>修饰词,而且赋一个空数组给<code>$each</code>修饰词，就像下面的代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">  &#123; _id: 3 &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    $push: &#123;</span><br><span class="line">      scores: &#123;</span><br><span class="line">         $each: [ ],</span><br><span class="line">         $slice: -3</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>操作的结果就是将scores数组切分为最后三个元素。</p>
+<h3 id="slice-和push搭配使用"><a href="#slice-和push搭配使用" class="headerlink" title="slice 和push搭配使用"></a><code>slice</code> 和<code>push</code>搭配使用</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="attr">"_id"</span> : <span class="number">5</span>,</span><br><span class="line">   <span class="attr">"quizzes"</span> : [</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">1</span>, <span class="attr">"score"</span> : <span class="number">10</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">2</span>, <span class="attr">"score"</span> : <span class="number">8</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">3</span>, <span class="attr">"score"</span> : <span class="number">5</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">4</span>, <span class="attr">"score"</span> : <span class="number">6</span> &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面的<code>$push</code>操作将会：</p>
+<ul>
+<li>使用<code>$each</code>修饰词来增加多个文档到<strong>quizzes</strong>数组中，</li>
+<li>使用<code>$sort</code>修饰词，按照<strong>score</strong>字段来降序排序修改过的<strong>quizzies</strong>数组中的全部元素，</li>
+<li>使用<code>$slice</code>修饰词，只保留<strong>quizzes</strong>数排中前三个排序过的元素。</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">   &#123; _id: 5 &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     $push: &#123;</span><br><span class="line">       quizzes: &#123;</span><br><span class="line">          $each: [ &#123; wk: 5, score: 8 &#125;, &#123; wk: 6, score: 7 &#125;, &#123; wk: 7, score: 6 &#125; ],</span><br><span class="line">          $sort: &#123; score: -1 &#125;,</span><br><span class="line">          $slice: 3</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>操作结果就是只保留了quizzes数组中分数最高的三个元素。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"_id"</span> : <span class="number">5</span>,</span><br><span class="line">  <span class="attr">"quizzes"</span> : [</span><br><span class="line">     &#123; <span class="attr">"wk"</span> : <span class="number">1</span>, <span class="attr">"score"</span> : <span class="number">10</span> &#125;,</span><br><span class="line">     &#123; <span class="attr">"wk"</span> : <span class="number">2</span>, <span class="attr">"score"</span> : <span class="number">8</span> &#125;,</span><br><span class="line">     &#123; <span class="attr">"wk"</span> : <span class="number">5</span>, <span class="attr">"score"</span> : <span class="number">8</span> &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面操作中的修饰词都会被Mongodb自行处理，所有它们之间的书写顺序无关紧要。更多详情请见<a href="https://docs.mongodb.com/manual/reference/operator/update/push/#push-modifiers" target="_blank" rel="noopener">Modifiers</a>。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/879ad6bc.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloudintheking">
+      <meta itemprop="description" content="北落师门">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloudintheking">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/879ad6bc.html" itemprop="url">
+                  jhipster学习记录之jdl
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2022-01-05 13:13:39 / 修改时间：13:14:16" itemprop="dateCreated datePublished" datetime="2022-01-05T13:13:39+08:00">2022-01-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/879ad6bc.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/879ad6bc.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">1.5k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">1 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>-<br>
+    <div id="aplayer-YEiLuCtH" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
+<blockquote>
+<p>个人笔记，如有描述不当，欢迎留言指出~</p>
+</blockquote>
+<h2 id="jhipster学习记录之jdl"><a href="#jhipster学习记录之jdl" class="headerlink" title="jhipster学习记录之jdl"></a>jhipster学习记录之jdl</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><ul>
+<li>os：windows10</li>
+<li>java：1.8.0_161</li>
+<li>node：10.16.0</li>
+<li>npm：6.9.0</li>
+<li>jhipster：6.1.0</li>
+</ul>
+<hr>
+<h3 id="jhipster"><a href="#jhipster" class="headerlink" title="jhipster"></a>jhipster</h3><p>学习jhipster最好的方式，当然是去看<a href="https://www.jhipster.tech/" target="_blank" rel="noopener">官网</a>啦,而且英语不好的小伙伴可以去官方维护的中文站点👉<a href="https://www.jhipster-cn.tech/" target="_blank" rel="noopener">here</a></p>
+<p>官网的入门指南里告诉我们，在命令行中敲下入hipster，随后就是一系列的选择配置，最终等待jhipster生成代码。<br><img src="https://fatboa.gz.bcebos.com/img/posts/jhipster学习记录之jdl/1560933228478.png?authorization=bce-auth-v1/b6f23434344c421e8a830ea644d98122/2019-06-20T06:02:32Z/-1/host/2eb97cd86e4c59a38e2817242836ee9927fc5940135a2d9136255b2e872d02a6" alt="Alt text"></p>
+<p>但有没有觉得这样很low阿，它有这几个缺点：</p>
+<ul>
+<li>每次新建项目，都有进行大量的配置选择，效率低</li>
+<li>每次都只能生成一个项目，对于微服务项目，服务模块都要输入jhipster生成，效率低</li>
+</ul>
+<p>所以我耐着性子继续往下看，当看到jdl的时候，发现上面两个缺点就不存在了</p>
+<hr>
+<h3 id="jdl（jhipster-doman-language）"><a href="#jdl（jhipster-doman-language）" class="headerlink" title="jdl（jhipster doman language）"></a>jdl（jhipster doman language）</h3><p><code>jhipster领域驱动语言</code>，详见👉<a href="https://www.jhipster-cn.tech/jdl/" target="_blank" rel="noopener">here</a><br>只要编写一次jdl文件，就可以到处运行，再也没有烦人的配置选择了🙄<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jhipster import-jdl <span class="string">"your jdl file"</span></span><br></pre></td></tr></table></figure></p>
+<p>它的语法其实挺简单，而且5.0以后支持注解，在定义的entity上直接使用<code>@service、@dto、@paginate</code>来代替service、dto、paginate</p>
+<p>下面简单介绍一下jhipster生成代码流程：<br>当在command中敲入jhipster，在一系列配置选择完后，jhipster会在根目录下生成<code>.yo-rc.json</code>文件和 <code>.jhipster</code>目录。</p>
+<ul>
+<li><code>.yo-rc.json</code>里存放应用的配置，对应jdl的application.config</li>
+<li><code>.*jhipster</code>目录下存放应用的实体类配置，对应jdl中application.entites 、entity</li>
+</ul>
+<p>jhipster再根据这些文件去生成项目代码。如果你需要重建一个相同配置jhipster项目的话，直接拷贝<code>.yo-rc.json</code>文件和 <code>.jhipster</code>目录放到新建文件夹下，进入command，敲下<code>jhipster</code>,就会生成一个相同配置的项目</p>
+<p>另外，jhipster一开始是支持前端框架<code>angular</code>的，后来慢慢加入了<code>react</code>和<code>vue</code>。<br>但<code>vue</code>却并不在默认的选择配置中，如果你用过jhipster命令就会知道，在进行<code>clentframework</code>选项时，只会出现<code>angular</code>和<code>react</code>。如果前端如果要使用vue的话，就只能用jhipster提供的<code>blueprint(蓝图)</code>功能<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g generator-jhipster-vuejs</span><br><span class="line">jhipster --blueprint vuejs</span><br></pre></td></tr></table></figure></p>
+<p>这样就可以生成一个前端框架是vue的项目。<br>那么如何在jdl里应用呢？<br>这里吐槽一下，官网里jdl的语法介绍的并不全，找了半天也没看到blueprint的语法！<br>后来断点调试jhipster-core中，发现<code>your node_modules folder\node_modules\generator-jhipster\node_modules\jhipster-core\lib\core\jhipster\application_options.js</code>这个文件里存放了应用的所有配置参数<br><img src="https://fatboa.gz.bcebos.com/img/posts/jhipster学习记录之jdl/1560938374710.png?authorization=bce-auth-v1/b6f23434344c421e8a830ea644d98122/2019-06-20T06:03:14Z/-1/host/358e8e2ad6d2835ada658153d7d2d285f22ec6f6b483dccbd5723b26577570c8" alt="Alt text"></p>
+<p>在你的j’d’l文件里加入下面的代码就可以啦<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">application &#123;</span><br><span class="line">	config&#123;</span><br><span class="line">		...</span><br><span class="line">		blueprint vuejs</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此处奉上我练习写的jdl文件👉<a href="https://github.com/Cloudintheking/hipster_demo/blob/master/app.jdl" target="_blank" rel="noopener">demo</a>👈</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/511a3199.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloudintheking">
+      <meta itemprop="description" content="北落师门">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloudintheking">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/511a3199.html" itemprop="url">
+                  windows下编译mysql5.7.25
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2022-01-05 11:19:28 / 修改时间：13:27:14" itemprop="dateCreated datePublished" datetime="2022-01-05T11:19:28+08:00">2022-01-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/511a3199.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/511a3199.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">1.5k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">1 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>-<br>
+    <div id="aplayer-SCyXZRNf" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
+<blockquote>
+<p>个人笔记，如有描述不当，欢迎留言指出~</p>
+</blockquote>
+<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><ul>
+<li>windows10</li>
+<li><a href="">cmake3.14.4</a></li>
+<li><a href="">perl</a></li>
+<li><a href="http://gnuwin32.sourceforge.net/packages/bison.html" target="_blank" rel="noopener">bison2.4.1</a></li>
+<li><a href="https://www.boost.org/users/history/" target="_blank" rel="noopener">boost1.59.0</a><br>PS: 注意安装bison时,不要选择创建菜单、快捷键,否则在编译mysql时跟我一样掉进坑里,后面会说明<h3 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h3><a href="https://downloads.mysql.com/archives/community/" target="_blank" rel="noopener">mysql官网</a><br><img src="/posts/511a3199/1564145036545.png" alt="Alt text"><br>解压后目录：<br><img src="/posts/511a3199/1564145482576.png" alt="Alt text"></li>
+</ul>
+<h3 id="使用cmake生成vs解决方案"><a href="#使用cmake生成vs解决方案" class="headerlink" title="使用cmake生成vs解决方案"></a>使用cmake生成vs解决方案</h3><p>打开cmake-gui.exe<br><img src="/posts/511a3199/1564146044303.png" alt="Alt text"><br>填好目录后<br><img src="/posts/511a3199/1564148283701.png" alt="Alt text"><br>正常情况下会报下面的错误<br><img src="/posts/511a3199/1564148391445.png" alt="Alt text"><br>cmake检测不到boost的位置</p>
+<p>找到WITH_BOOST参数，输入本地安装的boost目录，再次点击configure,等待配置完成,最后点击generate,等待初始化完成。<br><img src="/posts/511a3199/1564148829283.png" alt="Alt text"><br>打开开始build目录可以看到，cmake给我们生成了MySQL.sln解决方案<br><img src="/posts/511a3199/1564148939414.png" alt="Alt text"></p>
+<h3 id="vs2019编译mysql"><a href="#vs2019编译mysql" class="headerlink" title="vs2019编译mysql"></a>vs2019编译mysql</h3><p>vs2019打开MySQL.sln后，可以看到一共生成了128个方案，全部编译非常耗时，所以我先只编译mysqld<br><img src="/posts/511a3199/1564149442222.png" alt="Alt text"></p>
+<p>如果你是跟着我的步骤一步步做下来，那你会得到下面的错误<br><img src="/posts/511a3199/1564149988635.png" alt="Alt text"></p>
+<p>一共105个错误，总结一下就两种错误</p>
+<ul>
+<li>没有lex_hash.h文件</li>
+<li>sql_locale.cc文件格式有问题,有乱码</li>
+</ul>
+<p>先解决第二种，根据提示进入报错文件<br>打开sql_locale.cc，好多乱码<br><img src="/posts/511a3199/1564156040985.png" alt="Alt text"><br>找到文件位置，重新保存为utf-8格式<br><img src="/posts/511a3199/1564156265057.png" alt="Alt text"></p>
+<p>第一种问题,我之前没搞懂出错原因，就用笨办法手动生成缺失文件，这里就不说了这种解决思路了，太笨<br>后来偶然在网上发现一篇<a href="http://venublog.com/2010/02/07/changing-mysql-parser-code-on-windows-build-breaks-due-to-bison/" target="_blank" rel="noopener">文章</a><br>经过一番摸索,我才发现,虽然bison安装的路径里没有空格没有中文,可是bison加入了开始菜单,导致bison找不到m4.exe,进而无法生成lex_hash.h文件<br>我也懒得重装bison,直接把m4.exe复制到编译后的sql目录下,然后重新编译下<br><img src="/posts/511a3199/1567137857724.png" alt="Alt text"></p>
+<h3 id="调试mysqld"><a href="#调试mysqld" class="headerlink" title="调试mysqld"></a>调试mysqld</h3><h4 id="初始化数据文件"><a href="#初始化数据文件" class="headerlink" title="初始化数据文件"></a>初始化数据文件</h4><p>随便创建data目录，比如E:\Downloads\mysql\data<br>然后找到编译后的mysqld.exe文件，我这里是<br><img src="/posts/511a3199/1567143564741.png" alt="Alt text"><br>进入cmd模式输入初始文件命令<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\Downloads\mysql\build\sql\Debug&gt;mysqld.exe --initialize-insecure --datadir=E:\Downloads\mysql\data</span><br></pre></td></tr></table></figure></p>
+<p><img src="/posts/511a3199/1567140616434.png" alt="Alt text"><br>断言错误，根据提示来到mysqld.cc第4406行<br><img src="/posts/511a3199/1567140736518.png" alt="Alt text"><br>把DBUG_ASSERT(0)改成DBUG_ASSERT(1)<br>重新编译一遍，重复执行<br>再次打开data目录,已经生成相应文件</p>
+<p>下面开始调试mysqld<br><img src="/posts/511a3199/1567143812971.png" alt="Alt text"><br>右键-&gt;属性<br><img src="/posts/511a3199/1567144003734.png" alt="Alt text"><br>命令参数中写上mysql的配置文件路径<br>my.ini<br><figure class="highlight profile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line"></span><br><span class="line">port=<span class="number">3307</span></span><br><span class="line"></span><br><span class="line">#basedir=D:\Environment\mysql<span class="number">-8.0</span><span class="number">.16</span>-winx64   </span><br><span class="line"></span><br><span class="line">datadir=E:\Downloads\mysql\data</span><br><span class="line"></span><br><span class="line">max_connections=<span class="number">200</span></span><br><span class="line"></span><br><span class="line">max_connect_errors=<span class="number">10</span></span><br><span class="line"></span><br><span class="line">character-set-server=utf8</span><br><span class="line"></span><br><span class="line">default-storage-engine=INNODB</span><br><span class="line">explicit_defaults_for_timestamp=true</span><br><span class="line"></span><br><span class="line">#default_authentication_plugin=mysql_native_password</span><br><span class="line">[mysql]</span><br><span class="line"></span><br><span class="line">default-character-set=utf8</span><br></pre></td></tr></table></figure></p>
+<p>入口函数上打个断点<br><img src="/posts/511a3199/1567144281369.png" alt="Alt text"></p>
+<p>右键-&gt;调试-&gt;进入并单步执行新实例<br><img src="/posts/511a3199/1567144757160.png" alt="Alt text"><br>已经进入断点了,接下来慢慢探索吧…</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -530,7 +1368,7 @@
         
           
             <p>-<br>
-    <div id="aplayer-gnNzZWYq" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
+    <div id="aplayer-cGIgrqCp" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~</p>
 </blockquote>
@@ -541,10 +1379,10 @@
 </ul>
 <p>用法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Scope</span>(scopeName=<span class="string">"xx"</span>,proxyMode=xxx)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XXX</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure></p>
 <p>或者<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XXXConfig</span></span>&#123;</span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@Scope</span>(scopeName=<span class="string">"xx"</span>,proxyMode=xxx)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Xxx <span class="title">getXxx</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> Xxx();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong><em>NOTE</em></strong>:<br>若scopeName=”prototype”,proxyMode=ScopedProxyMode.NO,那每次都会得到一个新的bean;<br>若scopeName=”prototype”,proxyMode=ScopedProxyMode.INTERFACES或TARGET_CLASS, 那么会被注入一个代理类（它是单例并非原型），代理类里根据scopeName来返回具体的bean。<br><img src="./653056-20160302182245205-1224347634.png" alt="Alt text"></p>
+<p><strong><em>NOTE</em></strong>:<br>若scopeName=”prototype”,proxyMode=ScopedProxyMode.NO,那每次都会得到一个新的bean;<br>若scopeName=”prototype”,proxyMode=ScopedProxyMode.INTERFACES或TARGET_CLASS, 那么会被注入一个代理类（它是单例并非原型），代理类里根据scopeName来返回具体的bean。<br><img src="/posts/dab52c7b/653056-20160302182245205-1224347634.png" alt="Alt text"></p>
 <h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><h3 id="cacheManager"><a href="#cacheManager" class="headerlink" title="cacheManager"></a>cacheManager</h3><p>cacheManager(缓存管理器)可以注册多个，但是id必须不同，另外必须指定其中一个cacheManager上加上<code>@Primary</code>，否则<code>CacheAspectSupport</code>(cache切面类)中获取cacheManager bean时返回多个会报错。</p>
-<p><img src="./1575809748903.png" alt="Alt text"></p>
-<p>也可以不指定<code>@Primary</code>，但要注册一个cache配置类继承<code>CachingConfigurerSupport</code>,并覆盖其中<strong>cacheManager()</strong>方法，返回一个已注册的cacheManager<br><img src="./1575812358419.png" alt="Alt text"></p>
+<p><img src="/posts/dab52c7b/1575809748903.png" alt="Alt text"></p>
+<p>也可以不指定<code>@Primary</code>，但要注册一个cache配置类继承<code>CachingConfigurerSupport</code>,并覆盖其中<strong>cacheManager()</strong>方法，返回一个已注册的cacheManager<br><img src="/posts/dab52c7b/1575812358419.png" alt="Alt text"></p>
 <p><code>@Cacheable</code>中可以指定cacheManager, 故可以实现不同的缓存方式</p>
 <p><code>EhcacheCacheManage</code>、<code>JcacheCacheManager</code>、<code>RedisCacheManager</code>三者都继承了 <strong><em><code>AbstractTransactionSupportingCacheManager</code></em></strong>， 通过设置<strong><em>setTransactionAware(boolean transactionAware)</em></strong>方法，可以实现事务提交后再进行缓存操作（注意，不管事务最后成功与否，缓存都会执行，慎用！！）</p>
 <h3 id="redisTemplate"><a href="#redisTemplate" class="headerlink" title="redisTemplate"></a>redisTemplate</h3><p><code>redisTemplate</code>（redis缓存模板）中 <strong><em>setEnableTransactionSupport(boolean enableTransactionSupport)</em></strong>设置开启事务支持，结合<code>@Transactional</code>可以实现缓存回滚</p>
@@ -785,7 +1623,7 @@
         
           
             <p>-<br>
-    <div id="aplayer-NIVbCJEg" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
+    <div id="aplayer-ZjafWlvX" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~</p>
 </blockquote>
@@ -1033,7 +1871,7 @@
         
           
             <p>-<br>
-    <div id="aplayer-MPNtOfVZ" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="false" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
+    <div id="aplayer-nrVqxHgG" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="false" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div><br>-</p>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~</p>
 </blockquote>
@@ -1274,7 +2112,7 @@
           
             <hr>
 
-    <div id="aplayer-bOBZfFXZ" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+    <div id="aplayer-NApxOQcs" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
 <hr>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~</p>
@@ -1497,7 +2335,7 @@
           
             <hr>
 
-    <div id="aplayer-vTkipHsa" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+    <div id="aplayer-zjbgSdAv" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
 <hr>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~</p>
@@ -1752,7 +2590,7 @@
           
             <hr>
 
-    <div id="aplayer-lWVimGqq" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
+    <div id="aplayer-CLWyNEps" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
 <hr>
 <blockquote>
 <p>个人笔记，如有描述不当，欢迎留言指出~</p>
@@ -1798,931 +2636,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/9885f22a.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="cloudintheking">
-      <meta itemprop="description" content="北落师门">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cloudintheking">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/9885f22a.html" itemprop="url">
-                  mongodb操作之$slice
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-08-15 21:50:29" itemprop="dateCreated datePublished" datetime="2018-08-15T21:50:29+08:00">2018-08-15</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/翻译篇/" itemprop="url" rel="index"><span itemprop="name">翻译篇</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/9885f22a.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/9885f22a.html" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">2.8k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">3 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-
-    <div id="aplayer-VOQRWkRW" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
-<hr>
-<blockquote>
-<p>翻译原文：<a href="https://docs.mongodb.com/manual/reference/operator/update/slice/#examples" target="_blank" rel="noopener">https://docs.mongodb.com/manual/reference/operator/update/slice/#examples</a></p>
-</blockquote>
-<h2 id="slice（切分）"><a href="#slice（切分）" class="headerlink" title="$slice（切分）"></a>$slice（切分）</h2><p>当进行<code>$push</code>(插入)操作时，可以通过 <code>$slice</code>修饰词来限制插入的数组元素个数。如果想从一个只读操作中映射或是返回数组元素中特定的值，详见<a href="https://docs.mongodb.com/manual/reference/operator/projection/slice/#proj._S_slice" target="_blank" rel="noopener"><code>$slice</code></a>映射操作。<br><code>$slice</code>修饰词必须搭配<code>$each</code>修饰词才能使用。不过，你也可以传递一个空数组给<code>$each</code>修饰词，从而只让<code>$slice</code>修饰词起作用。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  $push: &#123;</span><br><span class="line">     &lt;field&gt;: &#123;</span><br><span class="line">       $each: [ &lt;value1&gt;, &lt;value2&gt;, ... ],</span><br><span class="line">       $slice: &lt;num&gt;</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>&lt; <strong>num</strong> &gt; 的值可以是：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Value</th>
-<th style="text-align:left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">0</td>
-<td style="text-align:left">更新数组&lt;<strong>field</strong>&gt;为空数组</td>
-</tr>
-<tr>
-<td style="text-align:left">负数</td>
-<td style="text-align:left">更新数组&lt;<strong>field</strong>&gt;只包含最后&lt;<strong>num</strong>&gt;个元素</td>
-</tr>
-<tr>
-<td style="text-align:left">正数</td>
-<td style="text-align:left">更新数组&lt;<strong>field</strong>&gt;只包含开头&lt;<strong>num</strong>&gt;个元素，适用于2.6以上版本</td>
-</tr>
-</tbody>
-</table>
-<h2 id="Behavior-行为"><a href="#Behavior-行为" class="headerlink" title="Behavior(行为)"></a>Behavior(行为)</h2><p>这些修饰词出现的顺序是无关紧要的。不过在上一个版本中，要求<code>$each</code>修饰词得作为第一个修饰词出现，如果要和<code>$slice</code>修饰词连用的话。这里有一份关于和<code>$push</code>搭配使用的修饰词列表，详见<a href="https://docs.mongodb.com/manual/reference/operator/update/push/#push-modifiers" target="_blank" rel="noopener">Modifiers</a>。<br>不结合<code>$each</code>修饰词而只使用<code>$slice</code>修饰词将会导致出错，不信可以试试。</p>
-<h2 id="栗子"><a href="#栗子" class="headerlink" title="栗子"></a>栗子</h2><h3 id="从数组末尾切片"><a href="#从数组末尾切片" class="headerlink" title="从数组末尾切片"></a>从数组末尾切片</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">1</span>, <span class="attr">"scores"</span> : [ <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
-<p>下面的操作增加一个新元素到<strong>scores</strong>数组中，然后使用<code>$slice</code>将数组修剪为最后五个元素。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">   &#123; _id: 1 &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     $push: &#123;</span><br><span class="line">       scores: &#123;</span><br><span class="line">         $each: [ 80, 78, 86 ],</span><br><span class="line">         $slice: -5</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>操作的结果就是将更新后的<strong>scores</strong>数组切分为最后5个元素<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">1</span>, <span class="attr">"scores"</span> : [  <span class="number">50</span>,  <span class="number">60</span>,  <span class="number">80</span>,  <span class="number">78</span>,  <span class="number">86</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="从数组头部切片"><a href="#从数组头部切片" class="headerlink" title="从数组头部切片"></a>从数组头部切片</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">2</span>, <span class="attr">"scores"</span> : [ <span class="number">89</span>, <span class="number">90</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
-<p>下面的操作增加一个新元素到<strong>scores</strong>数组中，然后使用<code>$slice</code>修饰词修剪为前三个元素。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">   &#123; _id: 2 &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     $push: &#123;</span><br><span class="line">       scores: &#123;</span><br><span class="line">         $each: [ 100, 20 ],</span><br><span class="line">         $slice: 3</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
-<p>操作的结果就是将更新后的<strong>scores</strong>数组切分为前三个元素中。</p>
-<h3 id="只用slice来更新数组"><a href="#只用slice来更新数组" class="headerlink" title="只用slice来更新数组"></a>只用slice来更新数组</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">3</span>, <span class="attr">"scores"</span> : [  <span class="number">89</span>,  <span class="number">70</span>,  <span class="number">100</span>,  <span class="number">20</span> ] &#125;</span><br></pre></td></tr></table></figure></p>
-<p>为了只用<code>$slice</code>修饰词来更新<strong>scores</strong>字段，我们得给出要切分的元素数量（比如 -3）赋给<code>slice</code>修饰词,而且赋一个空数组给<code>$each</code>修饰词，就像下面的代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">  &#123; _id: 3 &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    $push: &#123;</span><br><span class="line">      scores: &#123;</span><br><span class="line">         $each: [ ],</span><br><span class="line">         $slice: -3</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
-<p>操作的结果就是将scores数组切分为最后三个元素。</p>
-<h3 id="slice-和push搭配使用"><a href="#slice-和push搭配使用" class="headerlink" title="slice 和push搭配使用"></a><code>slice</code> 和<code>push</code>搭配使用</h3><p>一个学生集合包含以下文档：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="attr">"_id"</span> : <span class="number">5</span>,</span><br><span class="line">   <span class="attr">"quizzes"</span> : [</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">1</span>, <span class="attr">"score"</span> : <span class="number">10</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">2</span>, <span class="attr">"score"</span> : <span class="number">8</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">3</span>, <span class="attr">"score"</span> : <span class="number">5</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">"wk"</span>: <span class="number">4</span>, <span class="attr">"score"</span> : <span class="number">6</span> &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>下面的<code>$push</code>操作将会：</p>
-<ul>
-<li>使用<code>$each</code>修饰词来增加多个文档到<strong>quizzes</strong>数组中，</li>
-<li>使用<code>$sort</code>修饰词，按照<strong>score</strong>字段来降序排序修改过的<strong>quizzies</strong>数组中的全部元素，</li>
-<li>使用<code>$slice</code>修饰词，只保留<strong>quizzes</strong>数排中前三个排序过的元素。</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">db.students.update(</span><br><span class="line">   &#123; _id: 5 &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     $push: &#123;</span><br><span class="line">       quizzes: &#123;</span><br><span class="line">          $each: [ &#123; wk: 5, score: 8 &#125;, &#123; wk: 6, score: 7 &#125;, &#123; wk: 7, score: 6 &#125; ],</span><br><span class="line">          $sort: &#123; score: -1 &#125;,</span><br><span class="line">          $slice: 3</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>操作结果就是只保留了quizzes数组中分数最高的三个元素。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"_id"</span> : <span class="number">5</span>,</span><br><span class="line">  <span class="attr">"quizzes"</span> : [</span><br><span class="line">     &#123; <span class="attr">"wk"</span> : <span class="number">1</span>, <span class="attr">"score"</span> : <span class="number">10</span> &#125;,</span><br><span class="line">     &#123; <span class="attr">"wk"</span> : <span class="number">2</span>, <span class="attr">"score"</span> : <span class="number">8</span> &#125;,</span><br><span class="line">     &#123; <span class="attr">"wk"</span> : <span class="number">5</span>, <span class="attr">"score"</span> : <span class="number">8</span> &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面操作中的修饰词都会被Mongodb自行处理，所有它们之间的书写顺序无关紧要。更多详情请见<a href="https://docs.mongodb.com/manual/reference/operator/update/push/#push-modifiers" target="_blank" rel="noopener">Modifiers</a>。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/915a4669.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="cloudintheking">
-      <meta itemprop="description" content="北落师门">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cloudintheking">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/915a4669.html" itemprop="url">
-                  oracle之表信息查询
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-08-10 21:41:43" itemprop="dateCreated datePublished" datetime="2018-08-10T21:41:43+08:00">2018-08-10</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/915a4669.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/915a4669.html" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">1.2k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">1 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-
-    <div id="aplayer-kTeanLtV" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
-<hr>
-<blockquote>
-<p>个人笔记，如有描述不当，欢迎留言指出~</p>
-</blockquote>
-<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>主管抽风，想查询数据库’dbo‘中各表字段结构、外键信息、索引信息。于是任务交给了我…</p>
-<h2 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 各表字段结构</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  TABLE_SCHEMA   数据库,</span><br><span class="line">  table_name     表名,</span><br><span class="line">  column_name    字段名,</span><br><span class="line">  data_type      类型,</span><br><span class="line">  is_nullable    是否为空,</span><br><span class="line">  column_default 默认值</span><br><span class="line"><span class="keyword">FROM</span> information_schema.columns</span><br><span class="line"><span class="keyword">WHERE</span> TABLE_SCHEMA = <span class="string">'dbo'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 各表外键信息</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  object_name(parent_object_id)                        表名,</span><br><span class="line">  object_name(constraint_object_id)                    约束名称,</span><br><span class="line">  col_name(parent_object_id, parent_column_id)         外键字段,</span><br><span class="line">  object_name(referenced_object_id)                    关联表名,</span><br><span class="line">  col_name(referenced_object_id, referenced_column_id) 关联表字段</span><br><span class="line"><span class="keyword">FROM</span> sys.foreign_key_columns</span><br><span class="line"><span class="keyword">WHERE</span> referenced_object_id <span class="keyword">IN</span> (</span><br><span class="line">  <span class="keyword">SELECT</span> object_id(T.table_name)</span><br><span class="line">  <span class="keyword">FROM</span> (</span><br><span class="line">         <span class="keyword">SELECT</span> table_name</span><br><span class="line">         <span class="keyword">FROM</span> information_schema.columns</span><br><span class="line">         <span class="keyword">WHERE</span> TABLE_SCHEMA = <span class="string">'dbo'</span></span><br><span class="line">       ) T</span><br><span class="line">)</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> object_name(parent_object_id)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 各表索引信息</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  object_name(object_id) 表名,</span><br><span class="line">  <span class="keyword">name</span>                   索引名,</span><br><span class="line">  is_unique              是否唯一</span><br><span class="line"><span class="keyword">FROM</span> sys.indexes</span><br><span class="line"><span class="keyword">WHERE</span> Object_id <span class="keyword">IN</span> (</span><br><span class="line">  <span class="keyword">SELECT</span> object_id(T.table_name)</span><br><span class="line">  <span class="keyword">FROM</span> (</span><br><span class="line">         <span class="keyword">SELECT</span> table_name</span><br><span class="line">         <span class="keyword">FROM</span> information_schema.columns</span><br><span class="line">         <span class="keyword">WHERE</span> TABLE_SCHEMA = <span class="string">'dbo'</span></span><br><span class="line">       ) T</span><br><span class="line">)</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> 表名</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/771d835a.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="cloudintheking">
-      <meta itemprop="description" content="北落师门">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cloudintheking">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/771d835a.html" itemprop="url">
-                  oracle之多表统计查询
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-08-09 21:58:40" itemprop="dateCreated datePublished" datetime="2018-08-09T21:58:40+08:00">2018-08-09</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/771d835a.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/771d835a.html" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">1.1k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">1 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-
-    <div id="aplayer-tfldoswb" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
-<hr>
-<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>主管想根据时间范围统计下各标段各桥梁部件的录入数量，这个任务就交给我吧…</p>
-<h2 id="表介绍"><a href="#表介绍" class="headerlink" title="表介绍"></a>表介绍</h2><ul>
-<li><strong>qr_code_item_type</strong>：桥梁部件类型表，类型有桩基、承台、墩柱等</li>
-<li><strong>qr_code_item1</strong> ：桥梁墩柱类部件信息表，关联表<em>qr_code_item_type</em>、<em>qr_code_main</em></li>
-<li><strong>qr_code_item2</strong> ：桥梁梁类部件信息表，关联表<em>qr_code_item_type</em>、<em>qr_code_main</em></li>
-<li><strong>qr_code_main</strong>：桥梁标段表<h2 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> itype.id,<span class="keyword">isnull</span>(total, <span class="number">0</span>) total</span><br><span class="line"><span class="keyword">FROM</span> qr_code_item_type itype</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> (</span><br><span class="line">              <span class="keyword">SELECT</span> item.item_type_id <span class="keyword">type</span>,<span class="keyword">COUNT</span>(*) total</span><br><span class="line">              <span class="keyword">FROM</span> qr_code_item item</span><br><span class="line">              <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> qr_code_main <span class="keyword">main</span> <span class="keyword">ON</span> item.qr_code_main_id = main.id</span><br><span class="line">              <span class="keyword">WHERE</span> main.section = <span class="number">2</span> <span class="keyword">AND</span> <span class="keyword">isnull</span>(item.update_time, item.create_time) <span class="keyword">BETWEEN</span> <span class="string">'20180301'</span> <span class="keyword">AND</span> <span class="string">'20180801'</span></span><br><span class="line">              <span class="keyword">GROUP</span> <span class="keyword">BY</span> item.item_type_id</span><br><span class="line">              <span class="keyword">UNION</span> ALL</span><br><span class="line">              <span class="keyword">SELECT</span> item.item_type_id <span class="keyword">type</span>, <span class="keyword">COUNT</span>(*) total</span><br><span class="line">              <span class="keyword">FROM</span> qr_code_item2 item</span><br><span class="line">              <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> qr_code_main <span class="keyword">main</span> <span class="keyword">ON</span> item.qr_code_main_id = main.id</span><br><span class="line">              <span class="keyword">WHERE</span> main.section = <span class="number">2</span> <span class="keyword">AND</span> <span class="keyword">isnull</span>(item.update_time, item.create_time) <span class="keyword">BETWEEN</span> <span class="string">'20180301'</span> <span class="keyword">AND</span> <span class="string">'20180801'</span></span><br><span class="line">              <span class="keyword">GROUP</span> <span class="keyword">BY</span> item.item_type_id</span><br><span class="line">            )</span><br><span class="line">            aa <span class="keyword">ON</span> itype.id = aa.type</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> itype.id</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>ps:墩柱类、梁类虽都属于部件类，但具体信息差别较大，故分成两个表，所以统计的时候使用了联合查询</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudintheking.github.io/posts/14f7ff4b.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="cloudintheking">
-      <meta itemprop="description" content="北落师门">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cloudintheking">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/14f7ff4b.html" itemprop="url">
-                  mongodb之主从、集群、分片
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-08-07 22:04:05" itemprop="dateCreated datePublished" datetime="2018-08-07T22:04:05+08:00">2018-08-07</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2021-04-26 21:07:09" itemprop="dateModified" datetime="2021-04-26T21:07:09+08:00">2021-04-26</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/14f7ff4b.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/posts/14f7ff4b.html" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">2.3k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">2 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-
-    <div id="aplayer-weugoKSV" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="3226373129" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-listfolded="true"></div>
-<hr>
-<blockquote>
-<p>个人笔记，如有描述不当，欢迎留言指出~</p>
-</blockquote>
-<h2 id="核心语句"><a href="#核心语句" class="headerlink" title="核心语句"></a>核心语句</h2><p>博客也好，官网也罢，密密麻麻一堆话，提炼浓缩就下面这几行命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#主从复制</span></span><br><span class="line">mongod --port 27018 --dbpath <span class="string">"F:\mongodbSet\mongodb1\data"</span> --logpath <span class="string">"F:\mongodbSet\mongodb1\log\mongodb.log"</span> --logappend --master</span><br><span class="line">mongod --port 27019 --dbpath <span class="string">"F:\mongodbSet\mongodb2\data"</span> --logpath <span class="string">"F:\mongodbSet\mongodb2\log\mongodb.log"</span> --logappend --slave --<span class="built_in">source</span>=127.0.0.1:27018</span><br><span class="line"></span><br><span class="line"><span class="comment">#副本集</span></span><br><span class="line">mongod --port 27018 --dbpath <span class="string">"F:\mongodbSet\mongodb1\data"</span> --logpath <span class="string">"F:\mongodbSet\mongodb1\log\mongodb.log"</span> --logappend --replSet myrs</span><br><span class="line">mongod --port 27019 --dbpath <span class="string">"F:\mongodbSet\mongodb2\data"</span> --logpath <span class="string">"F:\mongodbSet\mongodb2\log\mongodb.log"</span> --logappend --replSet myrs</span><br><span class="line">mongod --port 27020 --dbpath <span class="string">"F:\mongodbSet\mongodb3\data"</span> --logpath <span class="string">"F:\mongodbSet\mongodb3\log\mongodb.log"</span> --logappend --replSet myrs</span><br><span class="line"></span><br><span class="line"><span class="comment">#分片+副本集</span></span><br><span class="line"><span class="comment">#config</span></span><br><span class="line">mongod --port 27018 --bind_ip 127.0.0.1 --configsvr --dbpath <span class="string">"F:\mongodbSet\config\mongodb1\data"</span> --logpath <span class="string">"F:\mongodbSet\config\mongodb1\log\mongodb.log"</span> --logappend --replSet configs</span><br><span class="line">mongod --port 27019 --bind_ip 127.0.0.1 --configsvr --dbpath <span class="string">"F:\mongodbSet\config\mongodb2\data"</span> --logpath <span class="string">"F:\mongodbSet\config\mongodb2\log\mongodb.log"</span> --logappend --replSet configs</span><br><span class="line">mongod --port 27020 --bind_ip 127.0.0.1 --configsvr --dbpath <span class="string">"F:\mongodbSet\config\mongodb3\data"</span> --logpath <span class="string">"F:\mongodbSet\config\mongodb3\log\mongodb.log"</span> --logappend --replSet configs</span><br><span class="line"></span><br><span class="line"><span class="comment">#shard</span></span><br><span class="line">mongod --port 27024 --bind_ip 127.0.0.1 --shardsvr --dbpath <span class="string">"F:\mongodbSet\shared\mongodb1\data"</span> --logpath <span class="string">"F:\mongodbSet\shared\mongodb1\log\mongodb.log"</span> --logappend --replSet shard</span><br><span class="line">mongod --port 27025 --bind_ip 127.0.0.1 --shardsvr --dbpath <span class="string">"F:\mongodbSet\shared\mongodb2\data"</span> --logpath <span class="string">"F:\mongodbSet\shared\mongodb2\log\mongodb.log"</span> --logappend --replSet shard</span><br><span class="line">mongod --port 27026 --bind_ip 127.0.0.1 --shardsvr --dbpath <span class="string">"F:\mongodbSet\shared\mongodb3\data"</span> --logpath <span class="string">"F:\mongodbSet\shared\mongodb3\log\mongodb.log"</span> --logappend --replSet shard</span><br><span class="line"></span><br><span class="line"><span class="comment">#mongos</span></span><br><span class="line">mongos --port 27021 --configdb configs/127.0.0.1:27018,127.0.0.1:27019,127.0.0.1:27020  --replSet mongos</span><br></pre></td></tr></table></figure></p>
-<h3 id="相关命令解释"><a href="#相关命令解释" class="headerlink" title="相关命令解释"></a>相关命令解释</h3><ul>
-<li>–port &lt;端口号&gt;： 设置mongo服务开启的端口</li>
-<li>–dbpath &lt;数据存储路径&gt;：设置mongo数据存储路径      </li>
-<li>–logpath  &lt;日志存储路径&gt;：设置mongo日志存储路径</li>
-<li>–logappend ：启用日志追加方式，否则新日志会覆盖旧日志</li>
-<li>–master ：设置为master方</li>
-<li>–slave：设置为slave方</li>
-<li>–source = &lt; ip : port&gt;：设置master服务的地址</li>
-<li>–replSet &lt;集群名&gt;：设置集群名称</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2769,7 +2687,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2926,7 +2844,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
@@ -2940,7 +2858,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">93k</span>
+    <span title="站点总字数">102k</span>
   
 
   
@@ -2951,7 +2869,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">1:25</span>
+    <span title="站点阅读时长">1:32</span>
   
 </div>
 
